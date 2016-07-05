@@ -1,6 +1,6 @@
 'use strict';
 // Set the Node ENV
-process.env.NODE_ENV = 'production';
+process.env.NODE_ENV = 'development';
 
 var chalk = require('chalk'),
   mongoose = require('../config/lib/mongoose');
