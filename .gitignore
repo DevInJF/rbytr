@@ -22,6 +22,7 @@ public/dist/
 modules/users/client/img/profile/uploads
 config/env/local.js
 config/env/production.js
+config/env/development.js
 *.pem
 
 # Ignoring MEAN.JS's gh-pages branch for documenation
