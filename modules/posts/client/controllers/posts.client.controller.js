@@ -12,7 +12,14 @@ angular.module('posts')
     $scope.authentication = Authentication;
     $scope.$state = $state;
     $scope.disabled = false;
-    
+    $scope.dateOpts = {
+      dateFormat: 'Y-m-d',
+      defaultDate: '2016-03-01 03:30:00 -0300'
+    };
+
+    $scope.datePostSetup = function(fpItem) {
+      console.log('flatpickr', fpItem);
+    };
     /**
      * Get available targets
      * 

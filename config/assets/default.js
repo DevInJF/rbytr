@@ -11,6 +11,7 @@ module.exports = {
       ],
       js: [
         'public/lib/flatpickr/dist/flatpickr.min.js',
+        'public/lib/angular-flatpickr/dist/ng-flatpickr.js',
         'public/lib/angular/angular.js',
         'public/lib/angular-resource/angular-resource.js',
         'public/lib/angular-messages/angular-messages.js',
