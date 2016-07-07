@@ -14,11 +14,11 @@ angular.module('posts')
     $scope.disabled = false;
     $scope.dateOpts = {
       dateFormat: 'Y-m-d',
-      defaultDate: '2016-03-01 03:30:00 -0300'
+      defaultDate: new Moment().add(1,'days').format('YYYY-MM-DD h:mm:ss a')
     };
-
+    
     $scope.datePostSetup = function(fpItem) {
-      console.log('flatpickr', fpItem);
+//      console.log('flatpickr', fpItem);
     };
     /**
      * Get available targets
@@ -71,7 +71,7 @@ angular.module('posts')
           var tasks = [
             {
               targets : targets,
-              datetime : '2016-10-12T23:20:00'
+              datetime : $scope.dateOpts.defaultDate
             }
           ];
           callback(null, tasks);
@@ -119,6 +119,10 @@ angular.module('posts')
      * Upload files if requested; create post object with or without files
      */
     $scope.create = function (isValid, files) {
+      console.log($scope);
+//      $scope.datePostSetup = function(fpItem) {
+//        console.log('flatpickr', fpItem);
+//      };
       $scope.error = null;
       if (!isValid) {
         $scope.$broadcast('show-errors-check-validity', 'postForm');
@@ -126,6 +130,8 @@ angular.module('posts')
       }
       
       var tasks = [];
+      console.log('this', this);
+      console.log('tasks', tasks);
       angular.forEach(this.tasks, function(value, key, obj) {
         obj[key].moment = new Moment(value.datetime).format();
       });

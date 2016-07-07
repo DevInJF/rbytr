@@ -10,8 +10,6 @@ module.exports = {
         'public/lib/flatpickr/dist/flatpickr.min.css'
       ],
       js: [
-        'public/lib/flatpickr/dist/flatpickr.min.js',
-        'public/lib/angular-flatpickr/dist/ng-flatpickr.js',
         'public/lib/angular/angular.js',
         'public/lib/angular-resource/angular-resource.js',
         'public/lib/angular-messages/angular-messages.js',
@@ -26,7 +24,9 @@ module.exports = {
         'public/lib/owasp-password-strength-test/owasp-password-strength-test.js',
         'public/lib/moment/moment.js',
         'public/lib/angular-loading-bar/build/loading-bar.min.js',
-        'public/lib/angular-moment/angular-moment.js'
+        'public/lib/angular-moment/angular-moment.js',
+        'public/lib/flatpickr/dist/flatpickr.min.js',
+        'public/lib/angular-flatpickr/dist/ng-flatpickr.js'
       ],
       tests: ['public/lib/angular-mocks/angular-mocks.js']
     },
