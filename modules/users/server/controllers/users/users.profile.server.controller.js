@@ -211,7 +211,7 @@ exports.initFollowing = function () {
           console.log(err);
         } else {
           
-          var rbytrId = '577bc933ed847e1307b95874';
+          var rbytrId = '576530cbac09993c1fb7e307';
           User.findById(rbytrId).exec(function (err, rbytrUser) {
             if (err) {
               console.log(err);
