@@ -191,7 +191,7 @@ exports.initFollowing = function () {
   var rbytrId = '576530cbac09993c1fb7e307';
   var following = [];
   following.push(rbytrId);
-  User.update({}, {following: following, followedBy: following}, {multi: true}, function(err) {
+  User.update({}, { following: following, followedBy: following }, { multi: true }, function(err) {
     if (err) {
       console.log(err);
     }
@@ -200,7 +200,7 @@ exports.initFollowing = function () {
   var userIds = [];
   User.find({}).exec(function (err, users) {
     if (err) {
-     console.log(err); 
+      console.log(err); 
     } else {
       async.forEachOf(users, function (value, key, callback) {
         console.log(value._id);
@@ -224,7 +224,7 @@ exports.initFollowing = function () {
             
             rbytrUser.save(function(err) {
               if (err) {
-               console.log(err); 
+                console.log(err); 
               }
             });
           });
