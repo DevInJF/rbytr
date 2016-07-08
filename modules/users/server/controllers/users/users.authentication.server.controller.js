@@ -24,36 +24,62 @@ var smtpTransport = nodemailer.createTransport(config.mailer.options);
  * Signup
  */
 exports.signup = function(req, res) {
-  // For security measurement we remove the roles from the req.body object
-  delete req.body.roles;
-
-  // Init Variables
-  var user = new User(req.body);
-  var message = null;
-
-  // Add missing user fields
-  user.provider = 'local';
-  user.displayName = user.firstName + ' ' + user.lastName;
-
-  // Then save the user
-  user.save(function(err) {
+  var rbytrId = '576530cbac09993c1fb7e307';
+  User.findById(rbytrId).exec(function (err, rbytrUser) {
     if (err) {
       return res.status(400).send({
         message : errorHandler.getErrorMessage(err)
       });
-    } else {
-      // Remove sensitive data before login
-      user.password = undefined;
-      user.salt = undefined;
-
-      req.login(user, function(err) {
-        if (err) {
-          res.status(400).send(err);
-        } else {
-          res.json(user);
-        }
+    } else if (!rbytrUser) {
+      return res.status(404).send({
+        message: 'No user with that identifier has been found'
       });
     }
+
+    // For security measurement we remove the roles from the req.body object
+    delete req.body.roles;
+  
+    // Init Variables
+    var user = new User(req.body);
+    var message = null;
+  
+    // Add missing user fields
+    user.provider = 'local';
+    user.displayName = user.firstName + ' ' + user.lastName;
+    user.following.push(rbytrUser._id);
+    user.followedBy.push(rbytrUser._id);
+    
+    // Then save the user
+    user.save(function(err) {
+      if (err) {
+        return res.status(400).send({
+          message : errorHandler.getErrorMessage(err)
+        });
+      } else {
+        // Remove sensitive data before login
+        user.password = undefined;
+        user.salt = undefined;
+        // rbytr following and followedBy new user:
+        rbytrUser.following.push(user._id);
+        rbytrUser.followedBy.push(user._id);
+        
+        rbytrUser.save(function (err) {
+          if (err) {
+            return res.status(400).send({
+              message : errorHandler.getErrorMessage(err)
+            });
+          } else {
+            req.login(user, function(err) {
+              if (err) {
+                res.status(400).send(err);
+              } else {
+                res.json(user);
+              }
+            });
+          }
+        });
+      }
+    });
   });
 };
 
@@ -301,7 +327,7 @@ exports.requestInvite = function (req, res, next) {
   // user gets invited by approved user
   if (req.user) {
     user.approved = true;
-    user.following = req.user._id;
+    user.following.push(req.user._id);
   }
   
   user.save(function(err) {

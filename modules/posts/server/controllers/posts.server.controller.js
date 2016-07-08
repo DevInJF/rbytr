@@ -90,11 +90,18 @@ exports.delete = function (req, res) {
 
 /**
  * List of Posts
+ * 
+ * 1.: get ids of followed users
+ * 2.: Put those user ids into Post.find params
  */
 exports.list = function (req, res) {
-  var params = {};
+  var params = {
+//    'user': { $in:req.user.followedBy }
+  };
   if (req.params.userId) {
-    params = { 'user':req.params.userId };
+    params = { 
+      'user':req.params.userId
+    };
   }
   // http://stackoverflow.com/questions/21069813/mongoose-multiple-query-populate-in-a-single-call
   Post.find(params).sort('-created').populate({ path:'user', select:'displayName profileImageURL' }).exec(function (err, posts) {

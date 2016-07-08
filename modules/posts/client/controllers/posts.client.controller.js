@@ -222,6 +222,7 @@ angular.module('posts')
      * find
      * 
      * Find a list of Posts
+     * only show posts of users who are followed by requesting user
      */
     $scope.find = function () {
       Posts.query({ userId: $state.params.userId }).$promise.then(function (results) {

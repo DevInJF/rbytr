@@ -8,6 +8,14 @@ angular.module('users').factory('Users', [ '$resource',
     }, {
       update : {
         method : 'PUT'
+      },
+      follow : {
+        method : 'PUT',
+        url : 'api/users/:userId/follow'
+      },
+      unfollow : {
+        method : 'PUT',
+        url : 'api/users/:userId/unfollow'
       }
     });
   }

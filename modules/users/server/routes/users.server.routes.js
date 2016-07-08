@@ -14,4 +14,10 @@ module.exports = function (app) {
   app.route('/api/users/accounts').delete(users.removeOAuthProvider);
   app.route('/api/users/password').post(users.changePassword);
   app.route('/api/users/picture').post(users.changeProfilePicture);
+  app.route('/api/users/:userId').get(users.read);
+  app.route('/api/users/:userId/follow').put(users.follow);
+  app.route('/api/users/:userId/unfollow').put(users.unfollow);
+  
+  /*??*/
+  app.param('userId', users.userByUserId);
 };

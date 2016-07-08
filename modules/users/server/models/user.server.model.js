@@ -112,7 +112,14 @@ var UserSchema = new Schema({
   inviteTokenExpires: {
     type: Date
   },
-  following: [String]
+  following: [{
+    type: String,
+    default: '576530cbac09993c1fb7e307'
+  }],
+  followedBy: [{
+    type: String,
+    default: '576530cbac09993c1fb7e307'
+  }]
 });
 
 /**

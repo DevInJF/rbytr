@@ -1,4 +1,36 @@
 <section ng-init="find()">
+    <section ng-if="$state.current.name === 'users.view'" ng-controller="UsersController">
+      
+      <div class="user-profileImage">
+        <img src=""
+          ng-src="{{user.profileImageURL}}"
+          class="" />
+      </div>
+      <div class="user-displayName">
+        <span ng-bind="user.displayName"></span>
+      </div>
+      <div class="user-followedBy">
+        Followers:
+        <span ng-bind="user.followedBy.length"></span>
+      </div>
+      <div class="user-following">
+        Following:
+        <span ng-bind="user.following.length"></span>
+      </div>
+      <div class="user-additionalProvidersData">
+        Networks:
+        <span ng-bind="user.additionalProvidersData"></span>
+      </div>
+      <span ng-if="followedBy(authentication.user._id)" 
+            ng-click="unfollow(user)" style="color:red;">
+        unfollow
+      </span>
+      <span ng-if="!followedBy(authentication.user._id)" 
+            ng-click="follow(user)" style="color:blue;">
+        follow
+      </span>
+      
+    </section>
     <section ng-show="$state.current.name === 'posts.list'" class="post-input-section">
       <md-content class="list-input">
       <form name="postForm" novalidate>
