@@ -118,7 +118,7 @@ exports.me = function (req, res) {
  * Follow a user
  */
 exports.follow = function (req, res) {
-  exports.initFollowing();
+//  exports.initFollowing();
   var user = req.user;
   var userToFollow = req.params.userId;
   var followedUser = req.profile;
@@ -131,7 +131,7 @@ exports.follow = function (req, res) {
       });
     } else {
    // save document of followed user
-//      followedUser.followedBy.push(req.user._id);
+      followedUser.followedBy.push(req.user._id);
       followedUser.save(function (err) {
         if (err) {
           return res.status(400).send({
@@ -180,59 +180,7 @@ exports.unfollow = function (req, res) {
     }
   });
 };
-/**
- * Initial following
- * 
- * to be removed
- * 
- * everyone follows rbytr, rbytr follows everyone
- */
-exports.initFollowing = function () {
-  var rbytrId = '576530cbac09993c1fb7e307';
-  var following = [];
-  following.push(rbytrId);
-  User.update({}, { following: following, followedBy: following }, { multi: true }, function(err) {
-    if (err) {
-      console.log(err);
-    }
-  });
-  
-  var userIds = [];
-  User.find({}).exec(function (err, users) {
-    if (err) {
-      console.log(err); 
-    } else {
-      async.forEachOf(users, function (value, key, callback) {
-        console.log(value._id);
-        userIds.push(value._id);
-        return callback(null);
-      }, function (err) {
-        if (err) {
-          console.log(err);
-        } else {
-          
-          var rbytrId = '576530cbac09993c1fb7e307';
-          User.findById(rbytrId).exec(function (err, rbytrUser) {
-            if (err) {
-              console.log(err);
-            } else if (!rbytrUser) {
-              console.log('No user with that identifier has been found');
-            }
-            
-            rbytrUser.following = userIds;
-            rbytrUser.followedBy = userIds;
-            
-            rbytrUser.save(function(err) {
-              if (err) {
-                console.log(err); 
-              }
-            });
-          });
-        }
-      });
-    }
-  });
-};
+
 
 /**
  * User middleware

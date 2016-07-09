@@ -1,35 +1,45 @@
 <section ng-init="find()">
-    <section ng-if="$state.current.name === 'users.view'" ng-controller="UsersController">
-      
-      <div class="user-profileImage">
-        <img src=""
-          ng-src="{{user.profileImageURL}}"
-          class="" />
+    <section ng-if="$state.current.name === 'users.view'" ng-controller="UsersController" class="user-info-section">
+      <div class="post-creator-spacer">
+        <div class="list-group-item-created">
+          <div class="user-profileImage">
+            <img src=""
+              ng-src="{{user.profileImageURL}}"
+              class="" />
+          </div>
+          <div class="post-origin-spacer">
+            <div class="post-user-displayName">
+              <span class="" ng-bind="user.displayName"></span>
+            </div>
+            <small class="post-created">
+              <div class="user-followedBy">
+                Followers:
+                <span ng-bind="user.followedBy.length"></span>
+              </div>
+              <div class="user-following">
+                Following:
+                <span ng-bind="user.following.length"></span>
+              </div>
+              <div class="user-additionalProvidersData">
+                Networks:
+                <span ng-if="user.additionalProvidersData" ng-repeat="(key,val) in user.additionalProvidersData">
+                  <span ng-bind="key"></span>{{$last ? '' : ', '}}
+                </span>
+              </div>
+            </small>
+          </div>
+        </div>
+        <div class="follow-button-spacer">
+          <md-button class="rbytr-button follow-button" ng-if="followedBy(authentication.user._id)" 
+                ng-click="unfollow(user)">
+            unfollow
+          </md-button>
+          <md-button class="rbytr-button follow-button" ng-if="!followedBy(authentication.user._id)" 
+                ng-click="follow(user)">
+            follow
+          </md-button>
+        </div>
       </div>
-      <div class="user-displayName">
-        <span ng-bind="user.displayName"></span>
-      </div>
-      <div class="user-followedBy">
-        Followers:
-        <span ng-bind="user.followedBy.length"></span>
-      </div>
-      <div class="user-following">
-        Following:
-        <span ng-bind="user.following.length"></span>
-      </div>
-      <div class="user-additionalProvidersData">
-        Networks:
-        <span ng-bind="user.additionalProvidersData"></span>
-      </div>
-      <span ng-if="followedBy(authentication.user._id)" 
-            ng-click="unfollow(user)" style="color:red;">
-        unfollow
-      </span>
-      <span ng-if="!followedBy(authentication.user._id)" 
-            ng-click="follow(user)" style="color:blue;">
-        follow
-      </span>
-      
     </section>
     <section ng-show="$state.current.name === 'posts.list'" class="post-input-section">
       <md-content class="list-input">
