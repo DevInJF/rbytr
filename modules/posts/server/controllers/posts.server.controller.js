@@ -91,12 +91,20 @@ exports.delete = function (req, res) {
 /**
  * List of Posts
  * 
- * 1.: get ids of followed users
- * 2.: Put those user ids into Post.find params
+ * find all posts that are either 
+ * from requesting user 
+ * or from followed users
+ * 
+ * if "/api/posts/:userId":
+ * find all posts from user with userId
  */
 exports.list = function (req, res) {
   var params = {
-//    'user': { $in:req.user.followedBy }
+    $or: 
+      [
+       { 'user': req.user._id },
+       { 'user': { $in:req.user.following } }
+      ]
   };
   if (req.params.userId) {
     params = { 

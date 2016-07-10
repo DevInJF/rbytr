@@ -17,9 +17,6 @@ angular.module('posts')
       defaultDate: new Moment().add(1,'days').format('YYYY-MM-DD h:mm:ss a')
     };
     
-    $scope.datePostSetup = function(fpItem) {
-//      console.log('flatpickr', fpItem);
-    };
     /**
      * Get available targets
      * 
