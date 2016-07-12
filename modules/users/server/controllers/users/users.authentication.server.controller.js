@@ -24,8 +24,8 @@ var smtpTransport = nodemailer.createTransport(config.mailer.options);
  * Signup
  */
 exports.signup = function(req, res) {
-  //var rbytrId = '576530cbac09993c1fb7e307'; // live
-  var rbytrId = '577bc933ed847e1307b95874'; // local
+  var rbytrId = '576530cbac09993c1fb7e307'; // live
+//  var rbytrId = '577bc933ed847e1307b95874'; // local
   User.findById(rbytrId).exec(function (err, rbytrUser) {
     if (err) {
       return res.status(400).send({
@@ -329,6 +329,7 @@ exports.requestInvite = function (req, res, next) {
   if (req.user) {
     user.approved = true;
     user.following.push(req.user._id);
+    user.followedBy.push(req.user._id);
   }
   
   user.save(function(err) {
@@ -340,6 +341,7 @@ exports.requestInvite = function (req, res, next) {
           // inviter follows new user
           var inviter = req.user;
           inviter.following.push(user._id);
+          inviter.followedBy.push(user._id);
           
           // blocking?
           inviter.save();
@@ -473,9 +475,113 @@ exports.validateInviteToken = function (req, res) {
     }
   }, function (err, user) {
     if (!user) {
-      return res.redirect('/invite/invalid');
+      return res.redirect('/authentication/invited/invalid');
     }
 
-    res.redirect('/invite/' + req.params.token);
+    res.redirect('/authentication/invited/' + req.params.token);
+  });
+};
+
+/**
+ * Invite authentication POST from email token
+ * To be adjusted !!!
+ */
+exports.invited = function (req, res, next) {
+  // Init Variables
+  var authDetails = req.body;
+  var message = null;
+  
+  async.waterfall([
+
+    function (done) {
+      User.findOne({
+        inviteToken: req.params.token,
+        inviteTokenExpires: {
+          $gt: Date.now()
+        }
+      }, function (err, user) {
+        if (!err && user) {
+          /*find rbytr*/
+           var rbytrId = '576530cbac09993c1fb7e307'; // live
+//          var rbytrId = '577bc933ed847e1307b95874'; // local
+          User.findById(rbytrId).exec(function (err, rbytrUser) {
+            if (err) {
+              return res.status(400).send({
+                message : errorHandler.getErrorMessage(err)
+              });
+            } else if (!rbytrUser) {
+              return res.status(404).send({
+                message: 'No user with that identifier has been found'
+              });
+            }
+            /* and follow rbytr */
+          
+            // Add missing user fields
+            user.provider = 'local';
+            user.firstName = authDetails.firstName;
+            user.lastName = authDetails.lastName;
+            user.displayName = authDetails.firstName + ' ' + authDetails.lastName;
+            user.email = authDetails.email;
+            user.username = authDetails.username;
+            user.password = authDetails.password;
+            user.following.push(rbytrUser._id);
+            user.followedBy.push(rbytrUser._id);
+            user.inviteToken = undefined;
+            user.inviteTokenExpires = undefined;
+  
+            user.save(function (err) {
+              if (err) {
+                return res.status(400).send({
+                  message: errorHandler.getErrorMessage(err)
+                });
+              } else {
+                req.login(user, function (err) {
+                  if (err) {
+                    res.status(400).send(err);
+                  } else {
+                    // Remove sensitive data before return authenticated user
+                    user.password = undefined;
+                    user.salt = undefined;
+  
+                    res.json(user);
+  
+                    done(err, user);
+                  }
+                });
+              }
+            });
+          });
+        } else {
+          return res.status(400).send({
+            message: 'Invite token is invalid or has expired.'
+          });
+        }
+      });
+    },
+    function (user, done) {
+      res.render('modules/users/server/templates/invite-authentication-confirm-email', {
+        displayName: user.displayName,
+        appName: config.app.title
+      }, function (err, emailHTML) {
+        done(err, emailHTML, user);
+      });
+    },
+    // If valid email, send reset email using service
+    function (emailHTML, user, done) {
+      var mailOptions = {
+        to: user.email,
+        from: config.mailer.from,
+        subject: 'You are an rbytr now',
+        html: emailHTML
+      };
+
+      smtpTransport.sendMail(mailOptions, function (err) {
+        done(err, 'done');
+      });
+    }
+  ], function (err) {
+    if (err) {
+      return next(err);
+    }
   });
 };

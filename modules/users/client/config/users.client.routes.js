@@ -50,6 +50,24 @@ angular.module('users').config(['$stateProvider',
         url: '/invite',
         templateUrl: 'modules/users/client/views/authentication/invite.client.view.html'
       })
+      .state('authentication.invited', {
+        abstract: true,
+        url: '/invited',
+        templateUrl: 'modules/users/client/views/authentication/authentication.client.view.html',
+        template: '<ui-view/>'
+      })
+      .state('authentication.invited.invalid', {
+        url: '/invalid',
+        templateUrl: 'modules/users/client/views/authentication/invite-authentication-invalid.client.view.html'
+      })
+      .state('authentication.invited.success', {
+        url: '/success',
+        templateUrl: 'modules/users/client/views/authentication/invite-authentication-success.client.view.html'
+      })
+      .state('authentication.invited.form', {
+        url: '/:token',
+        templateUrl: 'modules/users/client/views/authentication/invite-authentication.client.view.html'
+      })
       .state('password', {
         abstract: true,
         url: '/password',

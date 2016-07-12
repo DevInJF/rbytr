@@ -1,10 +1,11 @@
 'use strict';
 
-angular.module('users').controller('AuthenticationController', ['$scope', '$state', '$http', '$location', '$window', 'Authentication', 'PasswordValidator',
-  function ($scope, $state, $http, $location, $window, Authentication, PasswordValidator) {
+angular.module('users').controller('AuthenticationController', ['$scope', '$stateParams', '$state', '$http', '$location', '$window', 'Authentication', 'PasswordValidator',
+  function ($scope, $stateParams, $state, $http, $location, $window, Authentication, PasswordValidator) {
     $scope.authentication = Authentication;
     $scope.popoverMsg = PasswordValidator.getPopoverMsg();
     $scope.$state = $state;
+    $scope.$stateParams = $stateParams;
 
     // Get an eventual error defined in the URL query string:
     $scope.error = $location.search().err;
@@ -67,6 +68,29 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
 
         // And redirect to the previous or home page
         $state.go($state.previous.state.name || 'home', $state.previous.params);
+      }).error(function (response) {
+        $scope.error = response.message;
+      });
+    };
+    
+    $scope.invitedUserAuthentication = function (isValid) {
+      $scope.success = $scope.error = null;
+
+      if (!isValid) {
+        $scope.$broadcast('show-errors-check-validity', 'invitedUserForm');
+
+        return false;
+      }
+
+      $http.post('/api/auth/invite/' + $stateParams.token, $scope.credentials).success(function (response) {
+        // If successful show success message and clear form
+        $scope.credentials = null;
+
+        // Attach user profile
+        Authentication.user = response;
+
+        // And redirect to the index page
+        $location.path('/authentication/invited/success');
       }).error(function (response) {
         $scope.error = response.message;
       });
