@@ -369,12 +369,8 @@ md-input-container {
 .auth.list-input .rbytr-button:hover {
   background-color: rgba(43,136,216,1);
 }
-.authTitle{
+.authTitle {
   text-align: center;
-  font-weight: 200;
-  font-size: 4rem;
-  letter-spacing: 1px;
-  color: rgba(40,40,40,1);
 }
 /*--Brands, progressbars--*/
 @font-face {
@@ -1401,4 +1397,37 @@ button.rbytr-button{
 .follow-button:hover{
   color: white !important;
   background-color: rgba(0,150,200,1) !important;
+}
+
+/*----*/
+.connections-container {
+  position:relative;
+  float: left;
+  width: 100%;
+  margin-top: 1rem;
+}
+.connection-container{
+  position:relative;
+  float: left;
+  width: 100%;
+  background-color: #fff;
+  padding: 1.5rem;
+  margin-top: 1rem;
+}
+.connection-image{
+  position:relative;
+  float: left;
+  width: 15%;
+}
+.connection-image img {
+  width: 70%;
+  height:auto;
+}
+.connection-description{
+  position:relative;
+  float: left;
+  width: 80%;
+}
+.connection-description-key{
+  color: rgba(100,100,100,1);
 }

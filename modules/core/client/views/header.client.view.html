@@ -35,16 +35,7 @@
 	        <h4>{{authentication.user.displayName}}</h4>
 	        <ul role="menu">
 	          <li ui-sref-active="active">
-	            <a ui-sref="settings.profile" ng-click="closeNav()">Edit Profile</a>
-	          </li>
-	          <li ui-sref-active="active">
-	            <a ui-sref="settings.picture" ng-click="closeNav()">Change Profile Picture</a>
-	          </li>
-	          <li ui-sref-active="active" ng-show="authentication.user.provider === 'local'">
-	            <a ui-sref="settings.password" ng-click="closeNav()">Change Password</a>
-	          </li>
-	          <li ui-sref-active="active">
-	            <a ui-sref="settings.accounts" ng-click="closeNav()">Manage Social Accounts</a>
+	            <a ui-sref="settings.accounts" ng-click="closeNav()">Manage Connections</a>
 	          </li>
               <li ui-sref-active="active">
                 <a ui-sref="settings.invite" ng-click="closeNav()">Invite</a>

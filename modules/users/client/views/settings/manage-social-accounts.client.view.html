@@ -1,60 +1,67 @@
-<section class="row" ng-controller="SocialAccountsController">
-  <h3 class="col-md-12 text-center" ng-show="hasConnectedAdditionalSocialAccounts()">Connected social accounts:</h3>
-  <div class="col-md-12 text-center">
-    <div ng-repeat="(providerName, providerData) in user.additionalProvidersData" class="social-account-container">
-      <img ng-src="/modules/users/client/img/buttons/{{providerName}}.png">
-      <a class="btn btn-danger btn-remove-account" ng-click="removeUserSocialAccount(providerName)">
-        <i class="glyphicon glyphicon-trash"></i>
-      </a>
+<section class="" ng-controller="SocialAccountsController">
+  <!-- Connected social accounts -->
+  <div class="connections-container">
+    <h4>Connected:</h4>
+    <div ng-repeat="(providerName, providerData) in user.additionalProvidersData" class="connection-container">
+      <div class="connection-image">
+        <img ng-src="/modules/users/client/img/buttons/{{providerName}}.png">
+      </div>
+      <div ng-if="providerName === 'linkedin'" class="connection-description">
+        <span class="connection-description-key">Name:</span> <span> {{providerData.formattedName}}</span><br/>
+        <span class="connection-description-key">Location:</span> <span> {{providerData.location.name}}</span><br/>
+        <span class="connection-description-key">Industry:</span> <span> {{providerData.industry}}</span><br/>
+      </div>
+      <div ng-if="providerName === 'twitter'" class="connection-description">
+        <span class="connection-description-key">Name:</span> <span>{{user.providerData.name}}</span><br/>
+        <span class="connection-description-key">Screen name:</span> <span>{{user.providerData.screen_name}}</span><br/>
+        <span class="connection-description-key">Location:</span> <span>{{user.providerData.location}}</span><br/>
+        <span class="connection-description-key">Description:</span> <span>{{user.providerData.description}}</span><br/>
+        <span class="connection-description-key">Followers:</span> <span>{{user.providerData.followers_count}}</span><br/>
+        <span class="connection-description-key">Following:</span> <span>{{user.providerData.friends_count}}</span>
+      </div>
+    </div>
+    
+    <div ng-if="user.provider === 'twitter'" class="connection-container">
+      <div class="connection-image">
+        <img ng-src="/modules/users/client/img/buttons/{{user.provider}}.png">
+      </div>
+      <div class="connection-description">
+        <span class="connection-description-key">Name:</span> <span>{{user.providerData.name}}</span><br/>
+        <span class="connection-description-key">Screen name:</span> <span>{{user.providerData.screen_name}}</span><br/>
+        <span class="connection-description-key">Location:</span> <span>{{user.providerData.location}}</span><br/>
+        <span class="connection-description-key">Description:</span> <span>{{user.providerData.description}}</span><br/>
+        <span class="connection-description-key">Followers:</span> <span>{{user.providerData.followers_count}}</span><br/>
+        <span class="connection-description-key">Following:</span> <span>{{user.providerData.friends_count}}</span>
+      </div>
+    </div>
+    <div ng-if="user.provider === 'linkedin'" class="connection-container">
+      <div class="connection-image">
+        <img ng-src="/modules/users/client/img/buttons/{{user.provider}}.png">
+      </div>
+      <div class="connection-description">
+        <span class="connection-description-key">Name:</span> <span> {{providerData.formattedName}}</span><br/>
+        <span class="connection-description-key">Location:</span> <span> {{providerData.location.name}}</span><br/>
+        <span class="connection-description-key">Industry:</span> <span> {{providerData.industry}}</span><br/>
+      </div>
     </div>
   </div>
-  <h3 class="col-md-12 text-center" ng-show="hasConnectedAdditionalSocialAccounts()">Unconnected social accounts:</h3>
-  <div class="col-md-12 text-center">
-    <div class="social-account-container" ng-hide="isConnectedSocialAccount('facebook')">
-      <img ng-src="/modules/users/client/img/buttons/facebook.png">
-      <a class="btn btn-success btn-remove-account" href="/api/auth/facebook" target="_self">
-        <i class="glyphicon glyphicon-plus"></i>
-      </a>
-    </div>
-    <div class="social-account-container" ng-hide="isConnectedSocialAccount('twitter')">
-      <img ng-src="/modules/users/client/img/buttons/twitter.png">
+  
+  <!-- Unconnected social accounts -->
+  <div class="connections-container">
+    <h4>Unconnected accounts:</h4>
+    <div class="connection-container" ng-hide="isConnectedSocialAccount('twitter')">
+      <div class="connection-image">
+        <img ng-src="/modules/users/client/img/buttons/twitter.png">
+      </div>
       <a class="btn btn-success btn-remove-account" href="/api/auth/twitter" target="_self">
         <i class="glyphicon glyphicon-plus"></i>
       </a>
     </div>
-    <div class="social-account-container" ng-hide="isConnectedSocialAccount('google')">
-      <img ng-src="/modules/users/client/img/buttons/google.png">
-      <a class="btn btn-success btn-remove-account" href="/api/auth/google" target="_self">
-        <i class="glyphicon glyphicon-plus"></i>
-      </a>
-    </div>
-    <div class="social-account-container" ng-hide="isConnectedSocialAccount('linkedin')">
-      <img ng-src="/modules/users/client/img/buttons/linkedin.png">
+    <div class="connection-container" ng-hide="isConnectedSocialAccount('linkedin')">
+      <div class="connection-image">
+        <img ng-src="/modules/users/client/img/buttons/linkedin.png">
+      </div>
       <a class="btn btn-success btn-remove-account" href="/api/auth/linkedin" target="_self">
-        <i class="glyphicon glyphicon-plus"></i>
-      </a>
-    </div>
-    <div class="social-account-container" ng-hide="isConnectedSocialAccount('github')">
-      <img ng-src="/modules/users/client/img/buttons/github.png">
-      <a class="btn btn-success btn-remove-account" href="/api/auth/github" target="_self">
-        <i class="glyphicon glyphicon-plus"></i>
-      </a>
-    </div>
-    <div class="social-account-container" ng-hide="isConnectedSocialAccount('paypal')">
-      <img ng-src="/modules/users/client/img/buttons/paypal.png">
-      <a class="btn btn-success btn-remove-account" href="/api/auth/paypal" target="_self">
-        <i class="glyphicon glyphicon-plus"></i>
-      </a>
-    </div>
-    <div class="social-account-container" ng-hide="isConnectedSocialAccount('dropbox')">
-      <img ng-src="/modules/users/client/img/buttons/dropbox.png">
-      <a class="btn btn-success btn-remove-account" href="/api/auth/dropbox" target="_self">
-        <i class="glyphicon glyphicon-plus"></i>
-      </a>
-    </div>
-    <div class="social-account-container" ng-hide="isConnectedSocialAccount('tumblr')">
-      <img ng-src="/modules/users/client/img/buttons/tumblr.png">
-      <a class="btn btn-success btn-remove-account" href="/api/auth/tumblr" target="_self">
         <i class="glyphicon glyphicon-plus"></i>
       </a>
     </div>

@@ -24,7 +24,8 @@ var smtpTransport = nodemailer.createTransport(config.mailer.options);
  * Signup
  */
 exports.signup = function(req, res) {
-  var rbytrId = '576530cbac09993c1fb7e307';
+  //var rbytrId = '576530cbac09993c1fb7e307'; // live
+  var rbytrId = '577bc933ed847e1307b95874'; // local
   User.findById(rbytrId).exec(function (err, rbytrUser) {
     if (err) {
       return res.status(400).send({
@@ -302,7 +303,7 @@ exports.removeOAuthProvider = function(req, res, next) {
  * A new user can ask for an invite or get invited by an approved user
  * A new user object will be created with the provided email address
  * An email will be sent to the email address
- * If there has been an invitor, the invitor follows the new user and vice versa
+ * If there has been an inviter, the inviter follows the new user and vice versa
  * 
  * requestInvite calls sendEmail(req, res, user[, req.user]):
  * @param {object} req 
@@ -336,12 +337,12 @@ exports.requestInvite = function (req, res, next) {
         if (err) {
           return res.status(400).send(err);
         } else {
-          // invitor follows new user
-          var invitor = req.user;
-          invitor.following.push(user._id);
+          // inviter follows new user
+          var inviter = req.user;
+          inviter.following.push(user._id);
           
           // blocking?
-          invitor.save();
+          inviter.save();
           return res.status(200).send(err);
         }
       });
@@ -364,12 +365,12 @@ exports.requestInvite = function (req, res, next) {
  * @param {object} req 
  * @param {object} res
  * @param {object} user - the unapproved user
- * @param {object} invitor - an optional object, approved user who invites the user
+ * @param {object} inviter - an optional object, approved user who invites the user
  * @param {Function} [callback] - A callback which is called as soon as the email got sent, 
  * or an error occurs. Invoked with
  * (err, response)
  */
-exports.sendEmail = function (req, res, user, invitor, callback) {
+exports.sendEmail = function (req, res, user, inviter, callback) {
   async.waterfall([
     // Generate random token
     function (done) {
@@ -380,7 +381,7 @@ exports.sendEmail = function (req, res, user, invitor, callback) {
     },
     // Save invite token
     function (token, done) {
-      if (invitor) {
+      if (inviter) {
         user.inviteToken = token;
         user.inviteTokenExpires = Date.now() + 3600000; // 1 hour
         user.save(function (err) {
@@ -396,9 +397,9 @@ exports.sendEmail = function (req, res, user, invitor, callback) {
       if (config.secure && config.secure.ssl === true) {
         httpTransport = 'https://';
       }
-      if (invitor) {
+      if (inviter) {
         res.render(path.resolve('modules/users/server/templates/invite-email'), {
-          invitor: invitor.displayName,
+          inviter: inviter.displayName,
           appName: config.app.title,
           url: httpTransport + req.headers.host + '/api/auth/invite/' + token,
           inviteTokenExpires: user.inviteTokenExpires.toString()
@@ -430,14 +431,14 @@ exports.sendEmail = function (req, res, user, invitor, callback) {
     },
     // prepare email for rbytr
     function (user, done) {
-      if (typeof invitor === 'undefined' || 'null') {
-        invitor = {};
-        invitor.displayName = '';
-        invitor._id = '';
+      if (typeof inviter === 'undefined' || 'null') {
+        inviter = {};
+        inviter.displayName = '';
+        inviter._id = '';
       }
       res.render(path.resolve('modules/users/server/templates/notice-email'), {
-        invitorName: invitor.displayName,
-        invitorId: invitor._id,
+        inviterName: inviter.displayName,
+        inviterId: inviter._id,
         userEmail: user.email
       }, function (err, emailHTML) {
         done(err, emailHTML, user);
@@ -459,4 +460,22 @@ exports.sendEmail = function (req, res, user, invitor, callback) {
       });
     }
   ]);
+};
+
+/**
+ * Invite GET from email token
+ */
+exports.validateInviteToken = function (req, res) {
+  User.findOne({
+    inviteToken: req.params.token,
+    inviteTokenExpires: {
+      $gt: Date.now()
+    }
+  }, function (err, user) {
+    if (!user) {
+      return res.redirect('/invite/invalid');
+    }
+
+    res.redirect('/invite/' + req.params.token);
+  });
 };
