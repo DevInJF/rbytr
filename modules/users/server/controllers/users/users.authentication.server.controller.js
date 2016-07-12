@@ -502,7 +502,7 @@ exports.invited = function (req, res, next) {
       }, function (err, user) {
         if (!err && user) {
           /*find rbytr*/
-           var rbytrId = '576530cbac09993c1fb7e307'; // live
+          var rbytrId = '576530cbac09993c1fb7e307'; // live
 //          var rbytrId = '577bc933ed847e1307b95874'; // local
           User.findById(rbytrId).exec(function (err, rbytrUser) {
             if (err) {
