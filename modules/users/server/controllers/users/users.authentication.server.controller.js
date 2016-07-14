@@ -24,8 +24,8 @@ var smtpTransport = nodemailer.createTransport(config.mailer.options);
  * Signup
  */
 exports.signup = function(req, res) {
-  var rbytrId = '576530cbac09993c1fb7e307'; // live
-//  var rbytrId = '577bc933ed847e1307b95874'; // local
+//  var rbytrId = '576530cbac09993c1fb7e307'; // live
+  var rbytrId = '577bc933ed847e1307b95874'; // local
   User.findById(rbytrId).exec(function (err, rbytrUser) {
     if (err) {
       return res.status(400).send({
@@ -316,47 +316,65 @@ exports.requestInvite = function (req, res, next) {
   delete req.body.roles;
 
   // Init Variables
-  var user = new User(req.body);
+  var user;
   var message = null;
   
-  // Add missing user fields
-  user.provider = 'local';
-  user.username = req.body.email;
-  user.firstName = '';
-  user.lastName = '';
-  
-  // user gets invited by approved user
-  if (req.user) {
-    user.approved = true;
-    user.following.push(req.user._id);
-    user.followedBy.push(req.user._id);
-  }
-  
-  user.save(function(err) {
-    if (req.user) {
-      exports.sendEmail(req, res, user, req.user, function (err, response) {
-        if (err) {
-          return res.status(400).send(err);
-        } else {
-          // inviter follows new user
-          var inviter = req.user;
-          inviter.following.push(user._id);
-          inviter.followedBy.push(user._id);
-          
-          // blocking?
-          inviter.save();
-          return res.status(200).send(err);
-        }
-      });
-    } else {
-      exports.sendEmail(req, res, user, null, function (err, response) {
-        if (err) {
-          return res.status(400).send(err);
-        } else {
-          return res.status(200).send(err);
-        }
-      });
+  // check if someone with "req.body.email" already asked for an invite
+  User.findOne({
+    email: req.body.email
+  }, function (err, response) {
+    if (err) {
+      console.log(err);
     }
+    if (!response) {
+      user = new User(req.body);
+    } else {
+      user = response;
+    }
+    
+    
+    // Add missing user fields
+    user.provider = 'local';
+    user.username = req.body.email;
+    user.firstName = '';
+    user.lastName = '';
+    
+    // user gets invited by approved user
+    if (req.user) {
+      user.approved = true;
+      user.following.push(req.user._id);
+      user.followedBy.push(req.user._id);
+    }
+    
+    user.save(function(err) {
+      if (err) {
+        console.log(err);
+      }
+      if (req.user) {
+        exports.sendEmail(req, res, user, req.user, function (err, response) {
+          if (err) {
+            return res.status(400).send(err);
+          } else {
+            // inviter follows new user
+            var inviter = req.user;
+            inviter.following.push(user._id);
+            inviter.followedBy.push(user._id);
+            
+            // blocking?
+            inviter.save();
+            return res.status(200).send(err);
+          }
+        });
+      } else {
+        exports.sendEmail(req, res, user, null, function (err, response) {
+          if (err) {
+            return res.status(400).send(err);
+          } else {
+            return res.status(200).send(err);
+          }
+        });
+      }
+    });
   });
 };
 
@@ -385,7 +403,7 @@ exports.sendEmail = function (req, res, user, inviter, callback) {
     function (token, done) {
       if (inviter) {
         user.inviteToken = token;
-        user.inviteTokenExpires = Date.now() + 3600000; // 1 hour
+        user.inviteTokenExpires = Date.now() + 3600000*24*7; // 1 week
         user.save(function (err) {
           done(err, token, user);
         });
@@ -502,8 +520,8 @@ exports.invited = function (req, res, next) {
       }, function (err, user) {
         if (!err && user) {
           /*find rbytr*/
-          var rbytrId = '576530cbac09993c1fb7e307'; // live
-//          var rbytrId = '577bc933ed847e1307b95874'; // local
+//          var rbytrId = '576530cbac09993c1fb7e307'; // live
+          var rbytrId = '577bc933ed847e1307b95874'; // local
           User.findById(rbytrId).exec(function (err, rbytrUser) {
             if (err) {
               return res.status(400).send({
@@ -545,7 +563,7 @@ exports.invited = function (req, res, next) {
   
                     res.json(user);
   
-                    done(err, user);
+                    done(err, user, rbytrUser);
                   }
                 });
               }
@@ -555,6 +573,20 @@ exports.invited = function (req, res, next) {
           return res.status(400).send({
             message: 'Invite token is invalid or has expired.'
           });
+        }
+      });
+    },
+    // save userId to be followed in rbytr document
+    function (user, rbytrUser, done) {
+      rbytrUser.following.push(user._id);
+      rbytrUser.followedBy.push(user._id);
+      rbytrUser.save(function (err) {
+        if (err) {
+          return res.status(400).send({
+            message: errorHandler.getErrorMessage(err)
+          });
+        } else {
+          done(err, user);
         }
       });
     },
