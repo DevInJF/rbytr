@@ -24,8 +24,8 @@ var smtpTransport = nodemailer.createTransport(config.mailer.options);
  * Signup
  */
 exports.signup = function(req, res) {
-//  var rbytrId = '576530cbac09993c1fb7e307'; // live
-  var rbytrId = '577bc933ed847e1307b95874'; // local
+  var rbytrId = '576530cbac09993c1fb7e307'; // live
+//  var rbytrId = '577bc933ed847e1307b95874'; // local
   User.findById(rbytrId).exec(function (err, rbytrUser) {
     if (err) {
       return res.status(400).send({
@@ -520,8 +520,8 @@ exports.invited = function (req, res, next) {
       }, function (err, user) {
         if (!err && user) {
           /*find rbytr*/
-//          var rbytrId = '576530cbac09993c1fb7e307'; // live
-          var rbytrId = '577bc933ed847e1307b95874'; // local
+          var rbytrId = '576530cbac09993c1fb7e307'; // live
+//          var rbytrId = '577bc933ed847e1307b95874'; // local
           User.findById(rbytrId).exec(function (err, rbytrUser) {
             if (err) {
               return res.status(400).send({
