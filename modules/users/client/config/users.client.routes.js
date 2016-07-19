@@ -107,9 +107,8 @@ angular.module('users').config(['$stateProvider',
         resolve: {
           userObject: function ($http, $stateParams) {
             return $http.get('api/users/'+ $stateParams.userId).then(function(data) {
-                console.log('resolved');
-                return data.data; 
-              });
+              return data.data; 
+            });
           }
         },
         controller: 'UsersController'
