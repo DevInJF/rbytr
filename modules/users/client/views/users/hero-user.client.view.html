@@ -1,0 +1,60 @@
+<section>
+    <section class="user-info-section" ng-init="findProfile()">
+      <div class="post-creator-spacer">
+        <div class="list-group-item-created">
+          <div class="user-profileImage">
+            <a ui-sref="users.view({ userId: user._id })" class="">
+              <img src=""
+                ng-src="{{user.profileImageURL}}"
+                class="" />
+            </a>
+          </div>
+          <div class="post-origin-spacer">
+            <div class="post-user-displayName">
+              <a ui-sref="users.view({ userId: user._id })" class="">
+                <span class="" ng-bind="user.displayName"></span>
+              </a>
+            </div>
+            <small class="post-created">
+              <div class="user-followedBy">
+                <a ui-sref="users.followers({ userId: user._id })" class="">
+                  Followers (<span ng-bind="user.followedBy.length"></span>)
+                </a>
+              </div>
+              <div class="user-following">
+                <a ui-sref="users.following({ userId: user._id })" class="">
+                  Following (<span ng-bind="user.following.length"></span>)
+                </a>
+              </div>
+              <div class="user-likes">
+                <a ui-sref="users.likes({ userId: user._id })" class="">
+                  Likes
+                </a>
+              </div>
+              <div class="user-shares">
+                <a ui-sref="users.shares({ userId: user._id })" class="">
+                  Shares
+                </a>
+              </div>
+              <div class="user-additionalProvidersData">
+                Networks:
+                <span ng-if="user.additionalProvidersData" ng-repeat="(key,val) in user.additionalProvidersData">
+                  <span ng-bind="key"></span>{{$last ? '' : ', '}}
+                </span>
+              </div>
+            </small>
+          </div>
+        </div>
+        <div ng-if="authentication.user._id !== $state.params.userId" class="follow-button-spacer">
+          <md-button class="rbytr-button follow-button" ng-if="followedBy(authentication.user._id)" 
+                ng-click="unfollow(user)">
+            unfollow
+          </md-button>
+          <md-button class="rbytr-button follow-button" ng-if="!followedBy(authentication.user._id)" 
+                ng-click="follow(user)">
+            follow
+          </md-button>
+        </div>
+      </div>
+    </section>
+</section>

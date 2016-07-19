@@ -682,13 +682,15 @@ textarea {
   opacity: 0;
 }
 #nav-bar {
-  position: absolute;
+  position: fixed;
   left: 0;
   right: 0;
   z-index: 1;
   height: 50px;
-/*   border-bottom: 1px solid #eeeeee; */
-/*   background-color: #f9f9f9; */
+}
+.nav-bar-loggedin{
+  border-bottom: 1px solid #eeeeee;
+  background-color: rgba(255,255,255,1);
 }
 #nav-bar a{
   border: none;
@@ -788,6 +790,21 @@ textarea {
 /*   border-left: 1px solid #cacaca; */
   box-sizing: border-box;
   color: transparent;
+}
+.user-btn{
+  float: right;
+  display: block;
+  position: relative;
+  margin: -50px 0 0 0;
+  width: 50px;
+  height: 50px;
+  top: 0;
+  right: 0;
+}
+.user-btn img{
+  width: 100%;
+  padding: 23%;
+  float: right;
 }
 #nav-bar .rbytr-btn {
   display: block;
@@ -1430,4 +1447,11 @@ button.rbytr-button{
 }
 .connection-description-key{
   color: rgba(100,100,100,1);
+}
+/*--follows--*/
+.follows-container{
+  background-color: rgba(255,255,255,1);
+  width: 100%;
+  position: relative;
+  float: left;
 }

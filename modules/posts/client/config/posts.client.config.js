@@ -11,9 +11,9 @@ angular.module('posts').run(['Menus',
       roles: ['user']
     });
 
-    // Add the dropdown list item
+    // Add the dropdown stream item
     Menus.addSubMenuItem('topbar', 'posts', {
-      title: 'List Posts',
+      title: 'Stream',
       state: 'posts.list'
     });
   }

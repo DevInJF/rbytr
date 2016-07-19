@@ -18,6 +18,10 @@ module.exports = function (app) {
   app.route('/api/users/:userId/follow').put(users.follow);
   app.route('/api/users/:userId/unfollow').put(users.unfollow);
   
-  /*??*/
-  app.param('userId', users.userByUserId);
+  app.route('/api/users/:userId/followers').get(users.followersList);
+  app.route('/api/users/:userId/following').get(users.followingList);
+  app.route('/api/users/:userId/shares').get(users.sharesList);
+  app.route('/api/users/:userId/likes').get(users.likesList);
+  
+  app.param('userId', users.userByID);
 };

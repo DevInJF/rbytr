@@ -16,5 +16,5 @@ module.exports = function (app) {
     .get(adminPolicy.isAllowed, admin.read)
     .put(adminPolicy.isAllowed, admin.update)
     .delete(adminPolicy.isAllowed, admin.delete);
-  app.param('userId', admin.userByID);
+//  app.param('userId', admin.userByID);
 };

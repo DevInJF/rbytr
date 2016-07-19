@@ -1,0 +1,50 @@
+<section>
+  <section ng-repeat="f in follows" class="user-info-section">
+    <div class="post-creator-spacer">
+      <div class="list-group-item-created">
+        <div class="user-profileImage">
+          <a ui-sref="users.view({ userId: f._id })" class="">
+            <img src=""
+              ng-src="{{f.profileImageURL}}"
+              class="" />
+          </a>
+        </div>
+        <div class="post-origin-spacer">
+          <div class="post-user-displayName">
+            <a ui-sref="users.view({ userId: f._id })" class="">
+              <span class="" ng-bind="f.displayName"></span>
+            </a>
+          </div>
+          <small class="post-created">
+            <div class="user-followedBy">
+              <a ui-sref="users.followers({ userId: f._id })" class="">
+                Followers (<span ng-bind="f.followedBy.length"></span>)
+              </a>
+            </div>
+            <div class="user-following">
+              <a ui-sref="users.following({ userId: f._id })" class="">
+                Following (<span ng-bind="f.following.length"></span>)
+              </a>
+            </div>
+            <div class="user-likes">
+              <a ui-sref="users.likes({ userId: f._id })" class="">
+                Likes
+              </a>
+            </div>
+            <div class="user-shares">
+              <a ui-sref="users.shares({ userId: f._id })" class="">
+                Shares
+              </a>
+            </div>
+          </small>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div class="user-info-section alert alert-warning text-center"
+    ng-if="(authentication.user._id === $state.params.userId) && (follows.$resolved && (follows.length <= 10))">
+    So little followers yet, why don't you
+    <a ui-sref="settings.invite">invite some</a>
+    ?
+  </div>
+</section>

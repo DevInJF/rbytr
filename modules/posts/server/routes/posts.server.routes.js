@@ -35,5 +35,5 @@ module.exports = function (app) {
 
   // Finish by binding the post middleware
   app.param('postId', posts.postByPostId);
-  app.param('userId', posts.postsByUserId);
+  app.param('userId', posts.userByID);
 };

@@ -147,7 +147,7 @@ exports.postByPostId = function (req, res, next, id) {
   });
 };
 
-exports.postsByUserId = function (req, res, next, id) {
+exports.userByID = function (req, res, next, id) {
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).send({
       message: 'User is invalid'

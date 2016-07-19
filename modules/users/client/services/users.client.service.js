@@ -16,6 +16,26 @@ angular.module('users').factory('Users', [ '$resource',
       unfollow : {
         method : 'PUT',
         url : 'api/users/:userId/unfollow'
+      },
+      findFollowers : {
+        method : 'GET',
+        url : 'api/users/:userId/followers',
+        isArray : true
+      },
+      findFollowing : {
+        method : 'GET',
+        url : 'api/users/:userId/following',
+        isArray : true
+      },
+      findLikes : {
+        method : 'GET',
+        url : 'api/users/:userId/likes',
+        isArray : true
+      },
+      findShares : {
+        method : 'GET',
+        url : 'api/users/:userId/shares',
+        isArray : true
       }
     });
   }

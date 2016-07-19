@@ -18,13 +18,6 @@ angular.module('posts').config(['$stateProvider',
           roles: ['user', 'admin']
         }
       })
-      .state('posts.create', {
-        url: '/create',
-        templateUrl: 'modules/posts/client/views/create-post.client.view.html',
-        data: {
-          roles: ['user', 'admin']
-        }
-      })
       .state('post', {
         abstract: true,
         url: '/post',

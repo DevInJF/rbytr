@@ -94,35 +94,70 @@ angular.module('users').config(['$stateProvider',
         url: '/:token',
         templateUrl: 'modules/users/client/views/password/reset-password.client.view.html'
       })
+//      .state('users', {
+//        abstract: true,
+//        url: '/users',
+//        templateUrl: 'modules/users/client/views/users/user.client.view.html',
+//        controller: 'UsersController'
+//      })
       .state('users', {
         abstract: true,
-        url: '/users',
-        template: '<ui-view/>'
+        url: '/users/:userId',
+        templateUrl: 'modules/users/client/views/users/user.client.view.html',
+        resolve: {
+          userObject: function ($http, $stateParams) {
+            return $http.get('api/users/'+ $stateParams.userId).then(function(data) {
+                console.log('resolved');
+                return data.data; 
+              });
+          }
+        },
+        controller: 'UsersController'
       })
       .state('users.view', {
-        url: '/:userId',
-        templateUrl: 'modules/posts/client/views/list-posts.client.view.html',
-        controller: 'PostsController'
+        url: '',
+        views: {
+          'list': {
+            templateUrl: 'modules/posts/client/views/list-posts.client.view.html',
+            controller: 'UsersController'
+          }
+        }
       })
       .state('users.followers', {
-        url: '/:userId/followers',
-        templateUrl: 'modules/users/client/views/users/followers-user.client.view.html',
-        controller: 'UsersController'
+        url: '/followers',
+        views: {
+          'follows': {
+            templateUrl: 'modules/users/client/views/users/follows-user.client.view.html',
+            controller: 'UsersController'
+          }
+        }
       })
       .state('users.following', {
-        url: '/:userId/following',
-        templateUrl: 'modules/users/client/views/users/following-user.client.view.html',
-        controller: 'UsersController'
+        url: '/following',
+        views: {
+          'follows': {
+            templateUrl: 'modules/users/client/views/users/follows-user.client.view.html',
+            controller: 'UsersController'
+          }
+        }
       })
       .state('users.likes', {
-        url: '/:userId/likes',
-        templateUrl: 'modules/posts/client/views/list-posts.client.view.html',
-        controller: 'PostsController'
+        url: '/likes',
+        views: {
+          'engagements': {
+            templateUrl: 'modules/users/client/views/users/engagements-user.client.view.html',
+            controller: 'UsersController'
+          }
+        }
       })
       .state('users.shares', {
-        url: '/:userId/shares',
-        templateUrl: 'modules/posts/client/views/list-posts.client.view.html',
-        controller: 'PostsController'
+        url: '/shares',
+        views: {
+          'engagements': {
+            templateUrl: 'modules/users/client/views/users/engagements-user.client.view.html',
+            controller: 'UsersController'
+          }
+        }
       });
   }
 ]);

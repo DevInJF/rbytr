@@ -1,8 +1,18 @@
 <div ng-controller="HeaderController">
 	<header id="menu-bar" class="undefined">
-	  <nav id="nav-bar">
+	  <nav id="nav-bar" ng-class="{ 'nav-bar-loggedin':authentication.user }">
 	    <a href="#nav-drawer" title="Menu" class="menu-btn">Menu</a>
+        <span ng-if="authentication.user">
+          <a ui-sref="posts.list"  title="rbytr" class="rbytr-btn">rbytr</a>
+        </span>
+        <span ng-if="!authentication.user">
           <a ui-sref="home"  title="rbytr" class="rbytr-btn">rbytr</a>
+        </span>
+        <a ng-if="authentication.user" ui-sref="users.view({ userId: authentication.user._id })" title="User" class="user-btn">
+          <img src=""
+            ng-src="{{authentication.user.profileImageURL}}"
+            class="" />
+        </a>
 	  </nav>
 	</header>
 	<nav id="off-canvas-menu">
@@ -11,6 +21,9 @@
 	      <li ng-repeat="item in menu.items | orderBy: 'position'" ng-if="item.shouldRender(authentication.user);" ng-switch="item.type" ng-class="{ active: $state.includes(item.state), dropdown: item.type === 'dropdown' }" class="{{item.class}}">
 	        <h4>{{::item.title}}</h4>
 	        <ul ng-switch-when="dropdown">
+              <li ui-sref-active="active">
+                <a ui-sref="users.view({ userId: authentication.user._id })" ng-click="closeNav()">Profile</a>
+              </li>
 	          <li ng-repeat="subitem in item.items | orderBy: 'position'" ng-if="subitem.shouldRender(authentication.user);" ui-sref-active="active">
 	            <a ui-sref="{{subitem.state}}" ng-bind="subitem.title" ng-click="closeNav()"></a>
 	          </li>
