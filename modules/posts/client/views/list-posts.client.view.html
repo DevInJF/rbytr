@@ -117,7 +117,7 @@
         <div class="post-creator-spacer">
           <div class="list-group-item-created">
             <div class="user-profileImage">
-              <a ui-sref="users.view({ userId: post.user._id })">
+              <a ui-sref="users.view({ userSlug: post.user.slugName })">
                 <img src=""
                   ng-src="{{post.user.profileImageURL}}"
                   class="" />
@@ -125,7 +125,7 @@
             </div>
             <div class="post-origin-spacer">
               <div class="post-user-displayName">
-                <a ui-sref="users.view({ userId: post.user._id })" class="" ng-bind="post.user.displayName"></a>
+                <a ui-sref="users.view({ userSlug: post.user.slugName })" class="" ng-bind="post.user.displayName"></a>
               </div>
               <small class="post-created">
                 <span ng-bind="post.created | date:'mediumDate'"></span>
@@ -192,10 +192,15 @@
       </div>
     </div>
     <div class="alert alert-warning text-center"
-      ng-if="(authentication.user._id === $state.params.userId) && (posts.$resolved && !posts.length)">
+      ng-if="(authentication.user.slugName === $state.params.userSlug) && (posts.$resolved && !posts.length)">
       No posts yet, why don't you
       <a ui-sref="posts.list">create one</a>
       ?
+    </div>
+    <div class="alert alert-warning text-center"
+      ng-if="(authentication.user.slugName !== $state.params.userSlug) && (posts.$resolved && !posts.length)">
+      <span class="" ng-bind="user.displayName"></span> hasn't published anything, yet. :-( <br/> Why don't you
+      <a ui-sref="settings.invite">invite</a> some more active rbytrs?
     </div>
   </div>
 </section>

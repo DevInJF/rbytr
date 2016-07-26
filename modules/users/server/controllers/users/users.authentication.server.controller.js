@@ -539,34 +539,45 @@ exports.invited = function (req, res, next) {
             user.firstName = authDetails.firstName;
             user.lastName = authDetails.lastName;
             user.displayName = authDetails.firstName + ' ' + authDetails.lastName;
-            user.email = authDetails.email;
-            user.username = authDetails.username;
-            user.password = authDetails.password;
-            user.following.push(rbytrUser._id);
-            user.followedBy.push(rbytrUser._id);
-            user.inviteToken = undefined;
-            user.inviteTokenExpires = undefined;
-  
-            user.save(function (err) {
+            exports.stringToSlug(user.displayName, function(err, slug) {
               if (err) {
-                return res.status(400).send({
-                  message: errorHandler.getErrorMessage(err)
-                });
+                console.log(err);
               } else {
-                req.login(user, function (err) {
-                  if (err) {
-                    res.status(400).send(err);
-                  } else {
-                    // Remove sensitive data before return authenticated user
-                    user.password = undefined;
-                    user.salt = undefined;
-  
-                    res.json(user);
-  
-                    done(err, user, rbytrUser);
-                  }
-                });
+                console.log(slug);
               }
+              
+              user.slugName = slug;
+              user.email = authDetails.email;
+              user.username = authDetails.username;
+              user.password = authDetails.password;
+              user.following.push(rbytrUser._id);
+              user.followedBy.push(rbytrUser._id);
+              user.inviteToken = undefined;
+              user.inviteTokenExpires = undefined;
+              
+              console.log(user);
+              
+              user.save(function (err) {
+                if (err) {
+                  return res.status(400).send({
+                    message: errorHandler.getErrorMessage(err)
+                  });
+                } else {
+                  req.login(user, function (err) {
+                    if (err) {
+                      res.status(400).send(err);
+                    } else {
+                      // Remove sensitive data before return authenticated user
+                      user.password = undefined;
+                      user.salt = undefined;
+    
+                      res.json(user);
+    
+                      done(err, user, rbytrUser);
+                    }
+                  });
+                }
+              });
             });
           });
         } else {

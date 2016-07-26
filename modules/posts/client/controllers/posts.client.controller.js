@@ -222,7 +222,8 @@ angular.module('posts')
      * only show posts of users who are followed by requesting user
      */
     $scope.find = function () {
-      Posts.query({ userId: $state.params.userId }).$promise.then(function (results) {
+      console.log($state.params);
+      Posts.query({ userSlug: $state.params.userSlug }).$promise.then(function (results) {
         console.log(results);
         angular.forEach(results, function(value, key, obj) {
           // convert links to 'a' tags

@@ -2,9 +2,7 @@
 
 // Posts service used for communicating with the posts REST endpoints
 angular.module('posts').factory('Posts', [ '$resource', function($resource) {
-  return $resource('api/posts/:userId', {
-    userId : '@_id'
-  });
+  return $resource('api/posts/:userSlug', {});
 }]);
 
 // http://stackoverflow.com/questions/15161349/multiple-routing-urls-for-single-service-angularjs

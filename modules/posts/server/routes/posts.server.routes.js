@@ -14,7 +14,7 @@ module.exports = function (app) {
     .post(posts.create);
   
   // Posts by user routes
-  app.route('/api/posts/:userId').all(postsPolicy.isAllowed)
+  app.route('/api/posts/:userSlug').all(postsPolicy.isAllowed)
     .get(posts.list);
   
   // Single post routes
@@ -36,4 +36,5 @@ module.exports = function (app) {
   // Finish by binding the post middleware
   app.param('postId', posts.postByPostId);
   app.param('userId', posts.userByID);
+  app.param('userSlug', posts.userBySlug);
 };

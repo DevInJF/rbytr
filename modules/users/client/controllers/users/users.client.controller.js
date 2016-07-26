@@ -15,7 +15,7 @@ angular.module('users').controller('UsersController', ['$scope', '$state', 'User
      */
     $scope.findProfile = function () {
       console.log('$state', $state);
-      Users.get({ userId: $state.params.userId }).$promise.then(function (results) {
+      Users.get({ userSlug: $state.params.userSlug }).$promise.then(function (results) {
         $scope.user = results;
       });
     };
@@ -56,7 +56,8 @@ angular.module('users').controller('UsersController', ['$scope', '$state', 'User
      * findFollowers
      */
     var findFollowers = function () {
-      Users.findFollowers({ userId: $state.params.userId }).$promise.then(function (results) {
+      console.log($state.params);
+      Users.findFollowers({ userSlug: $state.params.userSlug }).$promise.then(function (results) {
         $scope.follows = results;
       });
     };
@@ -65,7 +66,7 @@ angular.module('users').controller('UsersController', ['$scope', '$state', 'User
      * findFollowing
      */
     var findFollowing = function () {
-      Users.findFollowing({ userId: $state.params.userId }).$promise.then(function (results) {
+      Users.findFollowing({ userSlug: $state.params.userSlug }).$promise.then(function (results) {
         $scope.follows = results;
       });
     };
@@ -74,7 +75,7 @@ angular.module('users').controller('UsersController', ['$scope', '$state', 'User
      */
     var findLikes = function () {
       $scope.posts = {};
-      Users.findLikes({ userId: $state.params.userId }).$promise.then(function (results) {
+      Users.findLikes({ userSlug: $state.params.userSlug }).$promise.then(function (results) {
         angular.forEach(results, function(value, key, obj) {
           // convert links to 'a' tags
           var regex = /(?:(?:https?|ftp):\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,}))\.?)(?::\d{2,5})?(?:[/?#]\S*)?$/i;
@@ -92,7 +93,7 @@ angular.module('users').controller('UsersController', ['$scope', '$state', 'User
      */
     var findShares = function () {
       $scope.posts = {};
-      Users.findShares({ userId: $state.params.userId }).$promise.then(function (results) {
+      Users.findShares({ userSlug: $state.params.userSlug }).$promise.then(function (results) {
         angular.forEach(results, function(value, key, obj) {
           // convert links to 'a' tags
           var regex = /(?:(?:https?|ftp):\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,}))\.?)(?::\d{2,5})?(?:[/?#]\S*)?$/i;

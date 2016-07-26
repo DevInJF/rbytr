@@ -5,7 +5,7 @@
           <div class="post-creator-spacer">
             <div class="list-group-item-created">
               <div class="user-profileImage">
-                <a ui-sref="users.view({ userId: user._id })" class="">
+                <a ui-sref="users.view()" class="">
                   <img src=""
                     ng-src="{{user.profileImageURL}}"
                     class="" />
@@ -13,28 +13,28 @@
               </div>
               <div class="post-origin-spacer">
                 <div class="post-user-displayName">
-                  <a ui-sref="users.view({ userId: user._id })" class="">
+                  <a ui-sref="users.view()" class="">
                     <span class="" ng-bind="user.displayName"></span>
                   </a>
                 </div>
                 <small class="post-created">
                   <div class="user-followedBy">
-                    <a ui-sref="users.followers({ userId: user._id })" class="">
+                    <a ui-sref="users.followers()" class="">
                       Followers (<span ng-bind="user.followedBy.length"></span>)
                     </a>
                   </div>
                   <div class="user-following">
-                    <a ui-sref="users.following({ userId: user._id })" class="">
+                    <a ui-sref="users.following()" class="">
                       Following (<span ng-bind="user.following.length"></span>)
                     </a>
                   </div>
                   <div class="user-likes">
-                    <a ui-sref="users.likes({ userId: user._id })" class="">
+                    <a ui-sref="users.likes()" class="">
                       Likes
                     </a>
                   </div>
                   <div class="user-shares">
-                    <a ui-sref="users.shares({ userId: user._id })" class="">
+                    <a ui-sref="users.shares()" class="">
                       Shares
                     </a>
                   </div>

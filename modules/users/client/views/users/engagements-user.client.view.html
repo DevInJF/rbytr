@@ -27,7 +27,7 @@
         <div class="post-creator-spacer">
           <div class="list-group-item-created">
             <div class="user-profileImage">
-              <a ui-sref="users.view({ userId: post.user._id })">
+              <a ui-sref="users.view({ userSlug: post.user.slugName })">
                 <img src=""
                   ng-src="{{post.user.profileImageURL}}"
                   class="" />
@@ -35,7 +35,7 @@
             </div>
             <div class="post-origin-spacer">
               <div class="post-user-displayName">
-                <a ui-sref="users.view({ userId: post.user._id })" class="" ng-bind="post.user.displayName"></a>
+                <a ui-sref="users.view({ userSlug: post.user.slugName })" class="" ng-bind="post.user.displayName"></a>
               </div>
               <small class="post-created">
                 <span ng-bind="post.created | date:'mediumDate'"></span>

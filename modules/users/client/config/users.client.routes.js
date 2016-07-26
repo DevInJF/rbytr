@@ -102,11 +102,11 @@ angular.module('users').config(['$stateProvider',
 //      })
       .state('users', {
         abstract: true,
-        url: '/users/:userId',
+        url: '/:userSlug',
         templateUrl: 'modules/users/client/views/users/user.client.view.html',
         resolve: {
           userObject: function ($http, $stateParams) {
-            return $http.get('api/users/'+ $stateParams.userId).then(function(data) {
+            return $http.get('api/users/slug/'+ $stateParams.userSlug).then(function(data) {
               return data.data; 
             });
           }

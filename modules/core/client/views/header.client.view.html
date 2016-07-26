@@ -8,7 +8,7 @@
         <span ng-if="!authentication.user">
           <a ui-sref="home"  title="rbytr" class="rbytr-btn">rbytr</a>
         </span>
-        <a ng-if="authentication.user" ui-sref="users.view({ userId: authentication.user._id })" title="User" class="user-btn">
+        <a ng-if="authentication.user" ui-sref="users.view({ userSlug: authentication.user.slugName })" title="User" class="user-btn">
           <img src=""
             ng-src="{{authentication.user.profileImageURL}}"
             class="" />
@@ -22,7 +22,7 @@
 	        <h4>{{::item.title}}</h4>
 	        <ul ng-switch-when="dropdown">
               <li ui-sref-active="active">
-                <a ui-sref="users.view({ userId: authentication.user._id })" ng-click="closeNav()">Profile</a>
+                <a ui-sref="users.view({ userSlug: authentication.user.slugName })" ng-click="closeNav()">Profile</a>
               </li>
 	          <li ng-repeat="subitem in item.items | orderBy: 'position'" ng-if="subitem.shouldRender(authentication.user);" ui-sref-active="active">
 	            <a ui-sref="{{subitem.state}}" ng-bind="subitem.title" ng-click="closeNav()"></a>

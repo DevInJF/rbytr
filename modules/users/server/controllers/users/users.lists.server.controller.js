@@ -13,7 +13,7 @@ var _ = require('lodash'),
 
 var findAndPrepareUsers = function (params, callback) {
   //http://stackoverflow.com/questions/21069813/mongoose-multiple-query-populate-in-a-single-call
-  User.find(params, 'displayName provider profileImageURL following followedBy').sort('-created').exec(function (err, users) {
+  User.find(params, 'slugName displayName provider profileImageURL following followedBy').sort('-created').exec(function (err, users) {
     if (err) {
       return callback(err);
     } else {
@@ -86,7 +86,7 @@ exports.sharesList = function (req, res) {
       }
     }
   };
-  Post.find(params).sort('-created').populate('user', 'displayName profileImageURL').exec(function (err, posts) {
+  Post.find(params).sort('-created').populate('user', 'slugName displayName profileImageURL').exec(function (err, posts) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
@@ -110,7 +110,7 @@ exports.likesList = function (req, res) {
       }
     }
   };
-  Post.find(params).sort('-created').populate('user', 'displayName profileImageURL').exec(function (err, posts) {
+  Post.find(params).sort('-created').populate('user', 'slugName displayName profileImageURL').exec(function (err, posts) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)

@@ -19,22 +19,22 @@ angular.module('users').factory('Users', [ '$resource',
       },
       findFollowers : {
         method : 'GET',
-        url : 'api/users/:userId/followers',
+        url : 'api/users/slug/:userSlug/followers',
         isArray : true
       },
       findFollowing : {
         method : 'GET',
-        url : 'api/users/:userId/following',
+        url : 'api/users/slug/:userSlug/following',
         isArray : true
       },
       findLikes : {
         method : 'GET',
-        url : 'api/users/:userId/likes',
+        url : 'api/users/slug/:userSlug/likes',
         isArray : true
       },
       findShares : {
         method : 'GET',
-        url : 'api/users/:userId/shares',
+        url : 'api/users/slug/:userSlug/shares',
         isArray : true
       }
     });

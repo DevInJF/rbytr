@@ -111,8 +111,13 @@ exports.list = function (req, res) {
       'user':req.params.userId
     };
   }
+  if (req.params.userSlug) {
+    params = { 
+      'user':req.profile._id
+    };
+  }
   // http://stackoverflow.com/questions/21069813/mongoose-multiple-query-populate-in-a-single-call
-  Post.find(params).sort('-created').populate({ path:'user', select:'displayName profileImageURL' }).exec(function (err, posts) {
+  Post.find(params).sort('-created').populate({ path:'user', select:'slugName displayName profileImageURL' }).exec(function (err, posts) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
@@ -161,6 +166,24 @@ exports.userByID = function (req, res, next, id) {
       return next(err);
     } else if (!user) {
       return next(new Error('Failed to load User ' + id));
+    }
+
+    req.profile = user;
+    next();
+  });
+};
+
+/**
+ * User by slug
+ */
+exports.userBySlug = function (req, res, next, slug) {
+  User.findOne({
+    slugName: slug
+  }).exec(function (err, user) {
+    if (err) {
+      return next(err);
+    } else if (!user) {
+      return next(new Error('Failed to load User ' + slug));
     }
 
     req.profile = user;

@@ -44,6 +44,10 @@ var UserSchema = new Schema({
     type: String,
     trim: true
   },
+  slugName: {
+    type: String,
+    trim: true
+  },
   email: {
     type: String,
     lowercase: true,
