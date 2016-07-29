@@ -288,6 +288,9 @@ div.list-group .post-file-image {
 }
 
 /*--Menu--*/
+.md-open-menu-container{
+  z-index:1030;
+}
 md-menu-content.md-default-theme, md-menu-content,
 a.md-button.md-default-theme:not([disabled]).md-focused, a.md-button:not([disabled]).md-focused, .md-button.md-default-theme:not([disabled]).md-focused, .md-button:not([disabled]).md-focused{
 /*   background-color: rgba(0,0,0,0.6); */
@@ -551,7 +554,7 @@ md-progress-linear .md-container {
 .progress-website .md-container {
   background-color: #707070;
   background-color: rgba(36, 36, 36, 0.1);
-} 
+}
 .progress-facebook .md-bar {
   background-color: #3b5998;
   background-color: rgba(59, 89, 152, 0.4);
@@ -806,6 +809,12 @@ textarea {
   width: 100%;
   padding: 23%;
   float: right;
+}
+.user-btn-profile-image{
+  position: relative;
+  display: block;
+  width: 21.625px;
+  margin: 10px 0 0 90px;
 }
 #nav-bar .rbytr-btn {
   display: block;

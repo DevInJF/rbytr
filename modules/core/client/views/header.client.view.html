@@ -2,17 +2,54 @@
 	<header id="menu-bar" class="undefined">
 	  <nav id="nav-bar" ng-class="{ 'nav-bar-loggedin':authentication.user }">
 	    <a href="#nav-drawer" title="Menu" class="menu-btn">Menu</a>
-        <span ng-if="authentication.user">
-          <a ui-sref="posts.list"  title="rbytr" class="rbytr-btn">rbytr</a>
-        </span>
-        <span ng-if="!authentication.user">
-          <a ui-sref="home"  title="rbytr" class="rbytr-btn">rbytr</a>
-        </span>
-        <a ng-if="authentication.user" ui-sref="users.view({ userSlug: authentication.user.slugName })" title="User" class="user-btn">
+      <span ng-if="authentication.user">
+        <a ui-sref="posts.list"  title="rbytr" class="rbytr-btn">rbytr</a>
+      </span>
+      <span ng-if="!authentication.user">
+        <a ui-sref="home"  title="rbytr" class="rbytr-btn">rbytr</a>
+      </span>
+			<md-menu class="user-btn">
+				<md-button
+					aria-label=""
+					class="md-icon-button"
+					ng-click="openMenu($mdOpenMenu, $event)">
+					<img src=""
+            ng-src="{{authentication.user.profileImageURL}}"
+            class="" />
+				</md-button>
+				<!-- <a ng-if="authentication.user" ui-sref="users.view({ userSlug: authentication.user.slugName })" title="User" class="user-btn">
           <img src=""
             ng-src="{{authentication.user.profileImageURL}}"
             class="" />
-        </a>
+        </a> -->
+				<md-menu-content width="3">
+					<md-menu-item>
+						<md-button ui-sref="users.view({ userSlug: authentication.user.slugName })">
+							Profile
+							<!-- {{authentication.user.profileImageURL}} -->
+							<img src=""
+		            ng-src="{{authentication.user.profileImageURL}}"
+		            class="user-btn-profile-image"
+								style="" />
+						</md-button>
+					</md-menu-item>
+					<md-menu-item>
+						<md-button ui-sref="settings.accounts">
+							Settings
+						</md-button>
+					</md-menu-item>
+					<md-menu-item>
+						<md-button ui-sref="settings.invite">
+							Invite
+						</md-button>
+					</md-menu-item>
+					<md-menu-item>
+						<md-button ui-sref="/api/auth/signout">
+							Logout
+						</md-button>
+					</md-menu-item>
+				</md-menu-content>
+			</md-menu>
 	  </nav>
 	</header>
 	<nav id="off-canvas-menu">

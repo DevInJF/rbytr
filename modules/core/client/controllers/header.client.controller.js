@@ -19,7 +19,22 @@ angular.module('core').controller('HeaderController', ['$scope', '$state', 'Auth
     $scope.$on('$stateChangeSuccess', function () {
       $scope.isCollapsed = false;
     });
+
+    /**
+     * openMenu
+     *
+     * @param $mdOpenMenu -
+     * @param ev -
+     *
+     * Open menu
+     */
+    var originatorEv;
+    $scope.openMenu = function($mdOpenMenu, ev) {
+      originatorEv = ev;
+      $mdOpenMenu(ev);
+    };
     
+
     (function() {
 
       function createMenu() {
