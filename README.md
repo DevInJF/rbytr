@@ -23,4 +23,6 @@
 ![rbytr screenshot](https://s3.eu-central-1.amazonaws.com/rbytr-test/github-screen-1.jpg)
 
 ## How to contribute?
-- Take a look at [CONTRIBUTING](https://github.com/rbytr/rbytr/blob/master/CONTRIBUTING.md)
+- Visit [rbytr.co](http://rbytr.co) to get an invite for early accessing the app.
+- Join us on [mattermost.rbytr.co](http://mattermost.rbytr.co).
+- Take a look at [CONTRIBUTING](https://github.com/rbytr/rbytr/blob/master/CONTRIBUTING.md).
