@@ -1,4 +1,4 @@
-# [rbytr] (http://rbytr.co)
+# [rbytr.co] (http://rbytr.co)
 <div>
 		<!-- Gitter -->
 		<a href="https://gitter.im/rbytr/rbytr">
