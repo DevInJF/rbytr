@@ -316,7 +316,7 @@ module.exports = function (grunt) {
 
   // Run the project in debug mode
   grunt.registerTask('debug', ['env:dev', 'lint', 'mkdir:upload', 'copy:localConfig', 'concurrent:debug']);
-  
+
   // new prod without watch and nodemon
   // run grunt first, then pm2
   grunt.registerTask('prod', ['build', 'env:prod', 'mkdir:upload', 'copy:localConfig']);
