@@ -7,7 +7,7 @@ First, thank you for considering contributing to rbytr! It's people like you tha
 We welcome any type of contribution, not only code. You can help with 
 - **QA**: file bug reports, the more details you can give the better (e.g. screenshots with the console open)
 - **rbytr**: use the rbytr app and engage with other rbytrs by pre-liking and pre-sharing posts you find worth spreading.
-- **Slack**: discuss and propose improvements via rbytr and slack
+- **Mattermost**: discuss and propose improvements via [rbytr.co](http://rbytr.co) and [mattermost.rbytr.co](http://mattermost.rbytr.co)
 - **Marketing**: writing blog posts, use cases, sharing success stories.
 - **Code**: there are plenty of [open issues](https://github.com/rbytr/rbytr/issues). Even if you can't write code, commenting on them, showing that you care about a given issue matters. It helps us triage them.
 
