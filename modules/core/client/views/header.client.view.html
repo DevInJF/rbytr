@@ -8,7 +8,7 @@
       <span ng-if="!authentication.user">
         <a ui-sref="home"  title="rbytr" class="rbytr-btn">rbytr</a>
       </span>
-			<md-menu class="user-btn">
+			<md-menu class="user-btn" ng-if="authentication.user">
 				<md-button
 					aria-label=""
 					class="md-icon-button"
@@ -44,7 +44,7 @@
 						</md-button>
 					</md-menu-item>
 					<md-menu-item>
-						<md-button ui-sref="/api/auth/signout">
+						<md-button href="/api/auth/signout" target="_self">
 							Logout
 						</md-button>
 					</md-menu-item>
