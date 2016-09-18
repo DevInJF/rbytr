@@ -16,14 +16,14 @@ angular.module('posts')
       dateFormat: 'Y-m-d',
       defaultDate: new Moment().add(1,'days').format('YYYY-MM-DD h:mm:ss a')
     };
-    
+
     /**
      * Get available targets
-     * 
+     *
      * @param {Function} [callback] - A callback which is called after intersection
-     * of all rbytrTargets and all configured userTargets, or an error occurs. 
-     * Invoked with (err, [intersectTargets]) 
-     * 
+     * of all rbytrTargets and all configured userTargets, or an error occurs.
+     * Invoked with (err, [intersectTargets])
+     *
      * e.g.:
      * var intersectTargets = ['twitter', 'linkedin', 'facebook'];
      */
@@ -35,7 +35,7 @@ angular.module('posts')
         }
         var userTargets = [],
           rbytrTargets = [];
-        
+
         // get userTargets
         if ($scope.authentication.user.additionalProvidersData) {
           userTargets = Object.keys($scope.authentication.user.additionalProvidersData);
@@ -46,7 +46,7 @@ angular.module('posts')
         angular.forEach(results, function(value, key, obj) {
           rbytrTargets.push(value.toLowerCase());
         });
-        
+
         // intersect rbytrTargets and userTargets
         var intersectTargets = userTargets.filter(function(n) {
           return rbytrTargets.indexOf(n) !== -1;
@@ -54,10 +54,10 @@ angular.module('posts')
         callback(null, intersectTargets);
       });
     };
-    
+
     /**
      * setTasks
-     * 
+     *
      * @param {Function} [callback]
      */
     $scope.setTasks = function (callback) {
@@ -75,10 +75,10 @@ angular.module('posts')
         }
       });
     };
-    
+
     /**
      * initialForm
-     * 
+     *
      * create initial - empty and untouched form
      */
     $scope.initialForm = function () {
@@ -89,16 +89,16 @@ angular.module('posts')
       delete $scope.files;
       delete $scope.tasks;
       $scope.setTasks(function(err, tasks){
-        $scope.tasks = tasks; 
+        $scope.tasks = tasks;
       });
     };
     if ($state.current.name === 'posts.list') {
       $scope.initialForm();
     }
-    
+
     /**
      * addTask
-     * 
+     *
      * Add new task row
      */
     $scope.addTask = function() {
@@ -106,13 +106,13 @@ angular.module('posts')
         $scope.tasks.push(tasks[0]);
       });
     };
-    
+
     /**
      * create
-     * 
+     *
      * @param {Boolean} isvalid - form validation
      * @param {Object} files - files object
-     * 
+     *
      * Upload files if requested; create post object with or without files
      */
     $scope.create = function (isValid, files) {
@@ -125,7 +125,7 @@ angular.module('posts')
         $scope.$broadcast('show-errors-check-validity', 'postForm');
         return false;
       }
-      
+
       var tasks = [];
       console.log('this', this);
       console.log('tasks', tasks);
@@ -137,7 +137,7 @@ angular.module('posts')
         content: $scope.content,
         tasks: $scope.tasks
       });
-      
+
       if (files && files.length) {
         Upload.upload({
           url: 'api/uploads',
@@ -161,7 +161,7 @@ angular.module('posts')
         savePost(post);
       }
     };
-    
+
     /**
      * savePost
      *
@@ -176,7 +176,7 @@ angular.module('posts')
         $scope.error = errorResponse.data.message;
       });
     }
-    
+
     /**
      * remove
      *
@@ -193,10 +193,10 @@ angular.module('posts')
         });
       });
     };
-    
+
     /**
      * update
-     * 
+     *
      * @param {Boolean} isvalid - form validation
      * Update existing Post
      */
@@ -206,7 +206,7 @@ angular.module('posts')
         $scope.$broadcast('show-errors-check-validity', 'postForm');
         return false;
       }
-      
+
       var post = $scope.post;
       post.$update(function () {
         $location.path('posts/' + post._id);
@@ -214,10 +214,10 @@ angular.module('posts')
         $scope.error = errorResponse.data.message;
       });
     };
-    
+
     /**
      * find
-     * 
+     *
      * Find a list of Posts
      * only show posts of users who are followed by requesting user
      */
@@ -236,10 +236,10 @@ angular.module('posts')
         $scope.posts = results;
       });
     };
-    
+
     /**
      * findOne
-     * 
+     *
      * Find existing post by $state.params.postId
      */
     $scope.findOne = function () {
@@ -247,13 +247,13 @@ angular.module('posts')
         postId: $state.params.postId
       });
     };
-    
+
     /**
      * openMenu
-     * 
-     * @param $mdOpenMenu - 
-     * @param ev - 
-     * 
+     *
+     * @param $mdOpenMenu -
+     * @param ev -
+     *
      * Open menu
      */
     var originatorEv;
@@ -261,11 +261,11 @@ angular.module('posts')
       originatorEv = ev;
       $mdOpenMenu(ev);
     };
-    
+
     /**
      * likePost
-     * 
-     * Like a post 
+     *
+     * Like a post
      */
     $scope.likePost = function () {
       var self = this,
@@ -278,6 +278,7 @@ angular.module('posts')
           if (err) {
             console.log(err);
           } else {
+            console.log(post.tasks);
             angular.forEach(post.tasks, function (value, key, obj) {
               if (targets.indexOf(obj[key].target) > -1) {
                 tasks.push(obj[key]);
@@ -297,10 +298,10 @@ angular.module('posts')
         });
       });
     };
-    
+
     /**
      * unlikePost
-     * 
+     *
      * Unlike a post
      */
     $scope.unlikePost = function () {
@@ -312,7 +313,7 @@ angular.module('posts')
         angular.forEach(post.likes, function (value, key, obj) {
           if (obj[key].user === user._id) {
             obj.splice(key, 1);
-          } 
+          }
         });
         var like = {};
         Post.like({
@@ -322,10 +323,10 @@ angular.module('posts')
         });
       });
     };
-    
+
     /**
      * sharePost
-     * 
+     *
      * Share a post
      */
     $scope.sharePost = function () {
@@ -358,10 +359,10 @@ angular.module('posts')
         });
       });
     };
-    
+
     /**
      * unsharePost
-     * 
+     *
      * Unshare a post
      */
     $scope.unsharePost = function () {
@@ -373,7 +374,7 @@ angular.module('posts')
         angular.forEach(post.shares, function (value, key, obj) {
           if (obj[key].user === user._id) {
             obj.splice(key, 1);
-          } 
+          }
         });
         var share = {};
         Post.share({
@@ -383,17 +384,50 @@ angular.module('posts')
         });
       });
     };
-    
+
     /**
      * commentPost
-     * 
+     *
      * Comment a post
      */
-    $scope.commentPost = function () {};
-    
+    $scope.commentPost = function (post) {
+      var self = this,
+        tasks = [];
+      Post.get({
+        postId: post._id
+      }, function (post, response) {
+        // get available targets e.g.: ['twitter', 'linkedin']
+        $scope.getAvailableTargets(function(err, targets) {
+          if (err) {
+            console.log(err);
+          } else {
+            angular.forEach(post.tasks, function (value, key, obj) {
+              if (targets.indexOf(obj[key].target) > -1) {
+                tasks.push(obj[key]);
+              }
+            });
+            var comment = {
+              user : $scope.authentication.user,
+              text : post.newComment,
+              created : new Date(),
+              tasks : tasks
+            };
+            post.commenting = false;
+            post.newComment = '';
+            post.comments.push(comment);
+            Post.comment({
+              postId: post._id
+            }, comment, function() { // send only like, instead of complete new post
+              $scope.find();
+            });
+          }
+        });
+      });
+    };
+
     /**
      * uncommentPost
-     * 
+     *
      * Uncomment a post
      */
     $scope.uncommentPost = function () {};

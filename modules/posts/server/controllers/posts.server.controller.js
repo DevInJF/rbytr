@@ -20,7 +20,7 @@ exports.create = function (req, res) {
   var post = req.body,
     engagementType = 'posts';
   post.user = req.user;
-  
+
   // check for for possible rate limitation
   RateLimit.create.post.assign(post, engagementType, function (err, response) {
     post = new Post(response[0].post);
@@ -58,7 +58,7 @@ exports.update = function (req, res) {
   post.title = req.body.title;
   post.content = req.body.content;
   post.likes = req.body.likes;
-  
+
   // check for ratelimits of likes/shares/etc. and postpone if needed - before saving the post
   post.save(function (err) {
     if (err) {
@@ -76,7 +76,7 @@ exports.update = function (req, res) {
  */
 exports.delete = function (req, res) {
   var post = req.post;
-  
+
   post.remove(function (err) {
     if (err) {
       return res.status(400).send({
@@ -90,29 +90,29 @@ exports.delete = function (req, res) {
 
 /**
  * List of Posts
- * 
- * find all posts that are either 
- * from requesting user 
+ *
+ * find all posts that are either
+ * from requesting user
  * or from followed users
- * 
+ *
  * if "/api/posts/:userId":
  * find all posts from user with userId
  */
 exports.list = function (req, res) {
   var params = {
-    $or: 
+    $or:
       [
        { 'user': req.user._id },
        { 'user': { $in:req.user.following } }
       ]
   };
   if (req.params.userId) {
-    params = { 
+    params = {
       'user':req.params.userId
     };
   }
   if (req.params.userSlug) {
-    params = { 
+    params = {
       'user':req.profile._id
     };
   }
@@ -198,21 +198,21 @@ exports.likes = function (req, res) {};
 
 /**
  * Like
- * 
+ *
  * - Postpones all like-tasks to future
  * - Handles like and unlike
  * - Saves post after check for ratelimits
- * 
+ *
  */
 exports.like = function (req, res) {
   var post = req.post,
     like = req.body,
     engagementType = 'likes',
     reqUser = req.user,
-    now = new Moment().format(), 
+    now = new Moment().format(),
     nowPlusOne = new Moment().add(1, 'm').format(),
     nowPlusTwo = new Moment().add(2, 'm').format();
-  
+
   /**
    * Postpone like-tasks to future
    * if a user likes a post with 'tasks in the past', the like-tasks must be postponed from past to now+2
@@ -226,7 +226,7 @@ exports.like = function (req, res) {
       like.tasks[key].moment = new Moment(likeTaskItem.moment).add(3, 'm').format();
     }
   });
-  
+
   /**
    * like is not empty and an object - it's a like
    */
@@ -279,7 +279,7 @@ exports.like = function (req, res) {
     });
   /**
    * like is not an object -> don't touch post -> response with original post
-   */ 
+   */
   } else {
     res.json(post);
   }
@@ -287,7 +287,7 @@ exports.like = function (req, res) {
 
 /**
  * Share
- * 
+ *
  * - Postpones all share-tasks to future
  * - Handles share and unshare
  * - Saves post after check for ratelimits
@@ -297,14 +297,14 @@ exports.share = function (req, res) {
     share = req.body,
     engagementType = 'shares',
     reqUser = req.user,
-    now = new Moment().format(), 
+    now = new Moment().format(),
     nowPlusOne = new Moment().add(1, 'm').format(),
     nowPlusTwo = new Moment().add(2, 'm').format();
   /**
    * Postpone share-tasks to future
    * if : a user shares a post with 'tasks in the past', the share-tasks must be postponed from past to now+2
    * as share-tasks come as clone from post-tasks we can check if 'desired' share-tasks are in the past or future
-   * else : postpone share-tasks to shareTaskItem.moment+1 (we need to wait for the post.task response to get the id)  
+   * else : postpone share-tasks to shareTaskItem.moment+1 (we need to wait for the post.task response to get the id)
    */
   async.forEachOf(share.tasks, function (shareTaskItem, key, callback) {
     if (new Date(nowPlusTwo) > new Date(shareTaskItem.moment)) {
@@ -365,7 +365,89 @@ exports.share = function (req, res) {
     });
   /**
    * share is not an object -> don't touch post -> response with original post
-   */ 
+   */
+  } else {
+    res.json(post);
+  }
+};
+
+exports.comment = function (req, res) {
+  var post = req.post,
+    comment = req.body,
+    engagementType = 'comments',
+    reqUser = req.user,
+    now = new Moment().format(),
+    nowPlusOne = new Moment().add(1, 'm').format(),
+    nowPlusTwo = new Moment().add(2, 'm').format();
+
+  /**
+   * Postpone comment-tasks to future
+   * if a user likes a post with 'tasks in the past', the comment-tasks must be postponed from past to now+2
+   * as comment-tasks come as clone from post-tasks we can check if 'desired' comment-tasks are in the past or future
+   * else : postpone comment-tasks to likeTaskItem.moment+1 (we need to wait for the post.task response to get the id)
+   */
+  async.forEachOf(comment.tasks, function (likeTaskItem, key, callback) {
+    if (new Date(nowPlusTwo) > new Date(likeTaskItem.moment)) {
+      comment.tasks[key].moment = new Moment(now).add(2, 'm').format();
+    } else {
+      comment.tasks[key].moment = new Moment(likeTaskItem.moment).add(3, 'm').format();
+    }
+  });
+
+  /**
+   * comment is not empty and an object - it's a comment
+   */
+  if (Object.keys(comment).length !== 0 && comment.constructor === Object) {
+    post.comments.push(comment);
+    // check for ratelimits of comments and postpone if needed - before saving the post
+    RateLimit.create.engagement.assign(post, comment.tasks, engagementType, reqUser, function (err, response) {
+      if (!err) {
+        post = response[0].post;
+        post.save(function (err) {
+          if (err) {
+            return res.status(400).send({
+              message: errorHandler.getErrorMessage(err)
+            });
+          } else {
+            res.json(post);
+          }
+        });
+      } else {
+        // err from RateLimit
+        return res.status(400).send({
+          message: errorHandler.getErrorMessage(err)
+        });
+      }
+    });
+  /**
+   * comment is empty and an object -> it's not a comment -> it's an uncomment
+   */
+  } else if (Object.keys(comment).length === 0 && comment.constructor === Object) {
+    var commentKey;
+    async.forEachOf(post.likes, function (item, key, callback) {
+      var commentUser = JSON.stringify(item.user);
+      var reqUser = JSON.stringify(req.user._id);
+      if (commentUser === reqUser) {
+        commentUser = key;
+        return callback(null);
+      }
+      return callback(null);
+    }, function (err) {
+      post.comments.splice(commentKey, 1);
+      post.save(function (err) {
+        if (err) {
+          return res.status(400).send({
+            message: errorHandler.getErrorMessage(err)
+          });
+        } else {
+          res.json(post);
+        }
+      });
+    });
+
+  /**
+   * comments is not an object -> don't touch post -> response with original post
+   */
   } else {
     res.json(post);
   }

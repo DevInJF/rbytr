@@ -1317,11 +1317,13 @@ button.rbytr-button{
   margin: 0;
   font-size: 100%;
 }
-.list-input .rbytr-button{
+.list-input .rbytr-button,
+.comment-post-spacer .rbytr-button{
   color: rgba(255,255,255,0.6);
   background-color: rgba(0,0,0,0.2);
 }
-.list-input .rbytr-button:hover{
+.list-input .rbytr-button:hover,
+.comment-post-spacer .rbytr-button:hover{
   color: rgba(255,255,255,1);
   background-color: rgba(0,0,0,0.4);
 }
@@ -1388,6 +1390,20 @@ button.rbytr-button{
 .post-like-spacer, .post-share-spacer, .post-comment-spacer {
   float: left;
   margin-right: 2%;
+}
+
+.comment-post-spacer * {
+  margin-top: 5px;
+}
+
+.comment-post-spacer input {
+  padding: 0.8rem 1.3rem;
+  width: 80%;
+}
+
+.comment-post-spacer button {
+  float: right;
+  margin-top: 7px !important;
 }
 
 /*--loading-bar--*/

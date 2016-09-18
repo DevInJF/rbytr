@@ -45,19 +45,19 @@ var PostSchema = new Schema({
     }
   ],
   targets: {
-    twitter: { 
+    twitter: {
       id: { type: String, default: '' }
     },
-    linkedin: { 
+    linkedin: {
       id: { type: String, default: '' }
     },
-    tumblr: { 
+    tumblr: {
       id: { type: String, default: '' }
     },
-    soundcloud: { 
+    soundcloud: {
       id: { type: String, default: '' }
     },
-    facebook: { 
+    facebook: {
       id: { type: String, default: '' }
     }
   },
@@ -89,7 +89,26 @@ var PostSchema = new Schema({
       ]
     }
   ],
-  comments: [ { type: Schema.ObjectId, ref: 'Post' } ],
+  comments: [
+    {
+      user: {
+        type: Schema.ObjectId,
+        ref: 'User'
+      },
+      tasks: [
+        {
+          target: { type: String, default: '' },
+          moment: { type: String, default: '' }
+        }
+      ],
+      comments: [
+        {
+          text: String,
+          date: Date
+        } 
+      ]
+    }
+  ],
   isComment:  { type: Boolean, default: false }
 });
 
