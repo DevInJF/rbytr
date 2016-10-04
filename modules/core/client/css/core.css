@@ -1337,7 +1337,6 @@ button.rbytr-button{
 }
 .comment-post-spacer .comment-container {
   display: block;
-  height: 33px;
   margin-bottom: 10px;
 }
 .comment-post-spacer .comment-container:last-of-type {
@@ -1351,16 +1350,19 @@ button.rbytr-button{
 .comment-post-spacer .user-profileImage {
   width: 7%;
 }
-.comment-post-spacer span {
-  position: relative;
-  line-height: 33px;
+.comment-post-spacer .comment-body {
+  display: inline;
 }
-.comment-post-spacer .comment-text {
-  float: left;
+.comment-post-spacer .comment-actions {
+  float: right;
+  position: relative;
+  height: 33px;
+}
+.comment-post-spacer span {
+  line-height: 33px;
   margin-left: 5px;
 }
 .comment-post-spacer .comment-date {
-  float: right;
   margin-right: 5px;
 }
 .image-selector {

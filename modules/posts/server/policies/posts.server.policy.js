@@ -29,6 +29,9 @@ exports.invokeRolesPolicies = function () {
     }, {
       resources: '/api/post/:postId/share',
       permissions: '*'
+    }, {
+      resources: '/api/post/:postId/comment',
+      permissions: ['get', 'put']
     }]
   }, {
     roles: ['user'],
@@ -46,6 +49,9 @@ exports.invokeRolesPolicies = function () {
       permissions: ['get', 'put']
     }, {
       resources: '/api/post/:postId/share',
+      permissions: ['get', 'put']
+    }, {
+      resources: '/api/post/:postId/comment',
       permissions: ['get', 'put']
     }]
   }, {

@@ -199,9 +199,16 @@
                     class="" />
                 </a>
               </div>
-              <span class="comment-text">{{comment.text}}</span>
-              <button ng-click="uncommentPost()" class="rbytr-button" ng-show="authentication.user._id==comment.user._id">Delete</button>
-              <span class="comment-date" ng-bind="comment.created  | date:'mediumDate'"></span>
+              <div class="comment-body">
+                <div class="post-user-displayName">
+                  <a ui-sref="users.view({ userSlug: comment.user.slugName })" class="" ng-bind="comment.user.displayName"></a>
+                </div>
+                <span class="comment-text">{{comment.text}}</span>
+              </div>
+              <div class="comment-actions">
+                <button ng-click="uncommentPost()" class="rbytr-button" ng-show="authentication.user._id==comment.user._id">Delete</button>
+                <span class="comment-date" ng-bind="comment.created  | date:'mediumDate'"></span>
+              </div>
             </div>
           </div>
           <input type="text" ng-model="newComment"/>
