@@ -102,7 +102,7 @@ var PostSchema = new Schema({
         }
       ],
       text: { type: String },
-      date: { type: Date }
+      created: { type: Date, default: Date.now }
     }
   ],
   isComment:  { type: Boolean, default: false }

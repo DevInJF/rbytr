@@ -190,8 +190,19 @@
           </div>
         </div>
         <div class="comment-post-spacer" ng-show="commenting">
-          <div class="comment-list-container">
-            <span class="comment-text" ng-repeat="comment in post.comments">{{comment.text}}</span>
+          <div class="comment-list-container" ng-show="post.comments.length">
+            <div class="comment-container" ng-repeat="comment in post.comments">
+              <div class="user-profileImage">
+                <a ui-sref="users.view({ userSlug: comment.user.slugName })">
+                  <img src=""
+                    ng-src="{{comment.user.profileImageURL}}"
+                    class="" />
+                </a>
+              </div>
+              <span class="comment-text">{{comment.text}}</span>
+              <button ng-click="uncommentPost()" class="rbytr-button" ng-show="authentication.user._id==comment.user._id">Delete</button>
+              <span class="comment-date" ng-bind="comment.created  | date:'mediumDate'"></span>
+            </div>
           </div>
           <input type="text" ng-model="newComment"/>
           <button ng-click="commentPost()" placeholder="Enter a comment here!" class="rbytr-button">Post</button>

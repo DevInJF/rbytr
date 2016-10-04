@@ -409,7 +409,6 @@ angular.module('posts')
             var comment = {
               user : $scope.authentication.user,
               text : self.newComment,
-              created : new Date(),
               tasks : tasks
             };
             Post.comment({
@@ -427,7 +426,24 @@ angular.module('posts')
      *
      * Uncomment a post
      */
-    $scope.uncommentPost = function () {};
+    $scope.uncommentPost = function () {
+      var self = this;
+      Post.get({
+        postId: self.post._id
+      }, function (post, response) {
+        angular.forEach(post.comments, function (value, key, obj) {
+          if (obj[key]._ === self.comment._id) {
+            obj.splice(key, 1);
+          }
+        });
+        var comment = {};
+        Post.comment({
+          postId: post._id
+        }, comment, function() { // send only empty comment, instead of complete new post
+          $scope.find();
+        });
+      });
+    };
   }
 ])
 .filter('contains', function() {

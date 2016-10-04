@@ -117,7 +117,7 @@ exports.list = function (req, res) {
     };
   }
   // http://stackoverflow.com/questions/21069813/mongoose-multiple-query-populate-in-a-single-call
-  Post.find(params).sort('-created').populate({ path:'user', select:'slugName displayName profileImageURL' }).exec(function (err, posts) {
+  Post.find(params).sort('-created').populate({ path:'user comments.user', select:'slugName displayName profileImageURL' }).exec(function (err, posts) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)

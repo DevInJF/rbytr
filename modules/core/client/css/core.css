@@ -1335,10 +1335,33 @@ button.rbytr-button{
   float: left;
   padding: 5px;
 }
-.comment-post-spacer .comment-text {
+.comment-post-spacer .comment-container {
   display: block;
-  text-align: left;
-  margin-bottom: 2px;
+  height: 33px;
+  margin-bottom: 10px;
+}
+.comment-post-spacer .comment-container:last-of-type {
+  margin-bottom: 0;
+}
+.comment-post-spacer .comment-container .rbytr-button {
+  position: relative;
+  float: right;
+  margin: 0 5px !important;
+}
+.comment-post-spacer .user-profileImage {
+  width: 7%;
+}
+.comment-post-spacer span {
+  position: relative;
+  line-height: 33px;
+}
+.comment-post-spacer .comment-text {
+  float: left;
+  margin-left: 5px;
+}
+.comment-post-spacer .comment-date {
+  float: right;
+  margin-right: 5px;
 }
 .image-selector {
   position: absolute;
@@ -1405,7 +1428,7 @@ button.rbytr-button{
   margin-right: 2%;
 }
 
-.comment-post-spacer * {
+.comment-post-spacer > * {
   margin-top: 5px;
 }
 
