@@ -101,12 +101,8 @@ var PostSchema = new Schema({
           moment: { type: String, default: '' }
         }
       ],
-      comments: [
-        {
-          text: String,
-          date: Date
-        } 
-      ]
+      text: { type: String },
+      date: { type: Date }
     }
   ],
   isComment:  { type: Boolean, default: false }

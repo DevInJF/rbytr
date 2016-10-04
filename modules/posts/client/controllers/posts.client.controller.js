@@ -390,11 +390,11 @@ angular.module('posts')
      *
      * Comment a post
      */
-    $scope.commentPost = function (post) {
+    $scope.commentPost = function () {
       var self = this,
         tasks = [];
       Post.get({
-        postId: post._id
+        postId: self.post._id
       }, function (post, response) {
         // get available targets e.g.: ['twitter', 'linkedin']
         $scope.getAvailableTargets(function(err, targets) {
@@ -408,13 +408,10 @@ angular.module('posts')
             });
             var comment = {
               user : $scope.authentication.user,
-              text : post.newComment,
+              text : self.newComment,
               created : new Date(),
               tasks : tasks
             };
-            post.commenting = false;
-            post.newComment = '';
-            post.comments.push(comment);
             Post.comment({
               postId: post._id
             }, comment, function() { // send only like, instead of complete new post

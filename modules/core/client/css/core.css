@@ -1327,6 +1327,19 @@ button.rbytr-button{
   color: rgba(255,255,255,1);
   background-color: rgba(0,0,0,0.4);
 }
+.comment-post-spacer .comment-list-container {
+  border: 1px solid #eeeeee;
+  border-color: rgba(240,240,240,1);
+  position: relative;
+  width: 100%;
+  float: left;
+  padding: 5px;
+}
+.comment-post-spacer .comment-text {
+  display: block;
+  text-align: left;
+  margin-bottom: 2px;
+}
 .image-selector {
   position: absolute;
   top: 0;

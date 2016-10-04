@@ -183,15 +183,18 @@
             )
           </div>
           <div class="post-comment-spacer">
-            <span ng-click="post.commenting = !post.commenting">comment</span>
+            <span ng-click="commenting = !commenting">comment</span>
             (
             <span>{{post.comments.length}}</span>
             )
           </div>
         </div>
-        <div class="comment-post-spacer" ng-show="post.commenting">
-          <input type="text" ng-model="post.newComment"/>
-          <button ng-click="commentPost(post)" placeholder="Enter a comment here!" class="rbytr-button">Post</button>
+        <div class="comment-post-spacer" ng-show="commenting">
+          <div class="comment-list-container">
+            <span class="comment-text" ng-repeat="comment in post.comments">{{comment.text}}</span>
+          </div>
+          <input type="text" ng-model="newComment"/>
+          <button ng-click="commentPost()" placeholder="Enter a comment here!" class="rbytr-button">Post</button>
         </div>
       </div>
     </div>
