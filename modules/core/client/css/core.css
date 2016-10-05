@@ -1317,13 +1317,53 @@ button.rbytr-button{
   margin: 0;
   font-size: 100%;
 }
-.list-input .rbytr-button{
+.list-input .rbytr-button,
+.comment-post-spacer .rbytr-button{
   color: rgba(255,255,255,0.6);
   background-color: rgba(0,0,0,0.2);
 }
-.list-input .rbytr-button:hover{
+.list-input .rbytr-button:hover,
+.comment-post-spacer .rbytr-button:hover{
   color: rgba(255,255,255,1);
   background-color: rgba(0,0,0,0.4);
+}
+.comment-post-spacer .comment-list-container {
+  border: 1px solid #eeeeee;
+  border-color: rgba(240,240,240,1);
+  position: relative;
+  width: 100%;
+  float: left;
+  padding: 5px;
+}
+.comment-post-spacer .comment-container {
+  display: block;
+  margin-bottom: 10px;
+}
+.comment-post-spacer .comment-container:last-of-type {
+  margin-bottom: 0;
+}
+.comment-post-spacer .comment-container .rbytr-button {
+  position: relative;
+  float: right;
+  margin: 0 5px !important;
+}
+.comment-post-spacer .user-profileImage {
+  width: 7%;
+}
+.comment-post-spacer .comment-body {
+  display: inline;
+}
+.comment-post-spacer .comment-actions {
+  float: right;
+  position: relative;
+  height: 33px;
+}
+.comment-post-spacer span {
+  line-height: 33px;
+  margin-left: 5px;
+}
+.comment-post-spacer .comment-date {
+  margin-right: 5px;
 }
 .image-selector {
   position: absolute;
@@ -1388,6 +1428,20 @@ button.rbytr-button{
 .post-like-spacer, .post-share-spacer, .post-comment-spacer {
   float: left;
   margin-right: 2%;
+}
+
+.comment-post-spacer > * {
+  margin-top: 5px;
+}
+
+.comment-post-spacer input {
+  padding: 0.8rem 1.3rem;
+  width: 80%;
+}
+
+.comment-post-spacer button {
+  float: right;
+  margin-top: 7px !important;
 }
 
 /*--loading-bar--*/

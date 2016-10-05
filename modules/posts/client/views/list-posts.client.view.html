@@ -67,7 +67,7 @@
                 <input
                   ng-flatpickr
                   fp-opts="dateOpts"
-                  fp-on-setup="datePostSetup(fpItem)" 
+                  fp-on-setup="datePostSetup(fpItem)"
                   ng-model="task.datetime"
                   data-enabletime="true">
               </md-input-container>
@@ -91,13 +91,13 @@
   </section>
   <div class="list-group">
     <div ng-repeat="post in posts" class="list-group-item-spacer">
-      
+
       <!-- progress bars-->
-      <!-- 
+      <!--
       <div class="list-group-item-tasks">
         <md-tooltip md-direction="top">
           <span ng-repeat="task in post.tasks">
-            <span ng-bind="task.target"></span>:&nbsp;<span ng-bind="task.moment | date:'medium'"></span> 
+            <span ng-bind="task.target"></span>:&nbsp;<span ng-bind="task.moment | date:'medium'"></span>
           </span>
         </md-tooltip>
         <div class="list-group-item-task"
@@ -112,7 +112,7 @@
         </div>
       </div>
        -->
-       
+
       <div class="list-group-item">
         <div class="post-creator-spacer">
           <div class="list-group-item-created">
@@ -157,11 +157,11 @@
         </div>
         <div class="post-engage-spacer">
           <div class="post-like-spacer">
-            <span ng-if="post.likes | contains:authentication.user._id" 
+            <span ng-if="post.likes | contains:authentication.user._id"
                   ng-click="likePost(post)" style="color:blue;">
               like
             </span>
-            <span ng-if="!(post.likes | contains:authentication.user._id)" 
+            <span ng-if="!(post.likes | contains:authentication.user._id)"
                   ng-click="unlikePost(post)" style="color:red;">
               unlike
             </span>
@@ -170,11 +170,11 @@
             )
           </div>
           <div class="post-share-spacer">
-            <span ng-if="post.shares | contains:authentication.user._id" 
+            <span ng-if="post.shares | contains:authentication.user._id"
                   ng-click="sharePost(post)" style="color:blue;">
               share
             </span>
-            <span ng-if="!(post.shares | contains:authentication.user._id)" 
+            <span ng-if="!(post.shares | contains:authentication.user._id)"
                   ng-click="unsharePost(post)" style="color:red;">
               unshare
             </span>
@@ -183,11 +183,36 @@
             )
           </div>
           <div class="post-comment-spacer">
-            <span ng-click="comment()">comment</span>
+            <span ng-click="commenting = !commenting">comment</span>
             (
-            <span>0</span>
+            <span>{{post.comments.length}}</span>
             )
           </div>
+        </div>
+        <div class="comment-post-spacer" ng-show="commenting">
+          <div class="comment-list-container" ng-show="post.comments.length">
+            <div class="comment-container" ng-repeat="comment in post.comments">
+              <div class="user-profileImage">
+                <a ui-sref="users.view({ userSlug: comment.user.slugName })">
+                  <img src=""
+                    ng-src="{{comment.user.profileImageURL}}"
+                    class="" />
+                </a>
+              </div>
+              <div class="comment-body">
+                <div class="post-user-displayName">
+                  <a ui-sref="users.view({ userSlug: comment.user.slugName })" class="" ng-bind="comment.user.displayName"></a>
+                </div>
+                <span class="comment-text">{{comment.text}}</span>
+              </div>
+              <div class="comment-actions">
+                <button ng-click="uncommentPost()" class="rbytr-button" ng-show="authentication.user._id==comment.user._id">Delete</button>
+                <span class="comment-date" ng-bind="comment.created  | date:'mediumDate'"></span>
+              </div>
+            </div>
+          </div>
+          <input type="text" ng-model="newComment"/>
+          <button ng-click="commentPost()" placeholder="Enter a comment here!" class="rbytr-button">Post</button>
         </div>
       </div>
     </div>
